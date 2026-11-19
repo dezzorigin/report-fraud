@@ -28,10 +28,11 @@ test.describe('Report Fraud — situs arsip disclosure USK', () => {
       .toHaveAttribute('href', 'Security_Disclosure_USK_2026.pdf');
   });
 
-  test('tiga temuan + bukti', async ({ page }) => {
+  test('empat temuan + bukti', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('.finding')).toHaveCount(3);
+    await expect(page.locator('.finding')).toHaveCount(4);
     await expect(page.locator('.sev-high')).toContainText('TINGGI');
+    await expect(page.locator('.sev-crit')).toContainText('KRITIS');
     await expect(page.locator('.sev-med')).toHaveCount(2);
     await expect(page.locator('.evidence code').first())
       .toContainText('fkep.usk.ac.id/BABEJUDI/');
@@ -44,6 +45,13 @@ test.describe('Report Fraud — situs arsip disclosure USK', () => {
     await expect(page.locator('#temuan-b')).not.toContainText('hendra_zufry@usk.ac.id');
     await expect(page.locator('#temuan-c')).toContainText('dev.fk.usk.ac.id');
     await expect(page.locator('#temuan-c')).toContainText('perwaliandev.usk.ac.id');
+    // Temuan D (F-006): tampil + agregatnya benar + redaksi terjaga.
+    await expect(page.locator('#temuan-d')).toContainText('H2H');
+    await expect(page.locator('#temuan-d')).toContainText('171.235');
+    await expect(page.locator('#temuan-d')).toContainText('3.629');
+    const dText = await page.locator('#temuan-d').innerText();
+    expect(dText).not.toMatch(/\b\d{16,18}\b/);
+    expect(dText).not.toMatch(/\b[0-9a-f]{32}\b/i);
   });
 
   test('penjelajah: muat 893 host, cari + filter', async ({ page }) => {
@@ -80,6 +88,16 @@ test.describe('Report Fraud — situs arsip disclosure USK', () => {
     const og = await request.get('/og-image.png');
     expect(og.status()).toBe(200);
     expect(og.headers()['content-type'] || '').toMatch(/^image\//);
+    // Temuan F-006 (redaksi) + hitungan agregat payment.
+    const f006 = await request.get('/findings/F-006-h2h-sqldump.md');
+    expect(f006.status()).toBe(200);
+    const f006Text = await f006.text();
+    expect(f006Text).toContain('F-006');
+    expect(f006Text).not.toMatch(/\b\d{16,18}\b/);
+    expect(f006Text).not.toMatch(/\b[0-9a-f]{32}\b/i);
+    const counts = await request.get('/evidence/h2h-payments-counts.txt');
+    expect(counts.status()).toBe(200);
+    expect(await counts.text()).toContain('TOTAL rows=3629');
   });
 
   test('mobile: tanpa scroll horizontal', async ({ page }) => {

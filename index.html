@@ -4,17 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Report Fraud — Laporan Keamanan USK 2026</title>
-<meta name="description" content="Arsip laporan disclosure keamanan Universitas Syiah Kuala, 29 April 2026: jejak defacement judi online, 35 surel terekspos, dan 893 subdomain yang dipetakan secara pasif.">
+<meta name="description" content="Arsip laporan disclosure keamanan Universitas Syiah Kuala, 29 April 2026: jejak defacement judi online, 35 surel terekspos, dan 893 subdomain yang dipetakan secara pasif; plus temuan kritis sistem pembayaran H2H (28 Sep 2026, versi redaksi).">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="canonical" href="https://report-fraud.pages.dev/">
 <meta property="og:title" content="Report Fraud — Laporan Keamanan USK 2026">
-<meta property="og:description" content="Arsip laporan disclosure keamanan Universitas Syiah Kuala, 29 April 2026: jejak defacement judi online, 35 surel terekspos, dan 893 subdomain yang dipetakan secara pasif.">
+<meta property="og:description" content="Arsip laporan disclosure keamanan Universitas Syiah Kuala, 29 April 2026: jejak defacement judi online, 35 surel terekspos, dan 893 subdomain yang dipetakan secara pasif; plus temuan kritis sistem pembayaran H2H (28 Sep 2026, versi redaksi).">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://report-fraud.pages.dev/">
 <meta property="og:image" content="https://report-fraud.pages.dev/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Report Fraud — Laporan Keamanan USK 2026">
-<meta name="twitter:description" content="Arsip laporan disclosure keamanan Universitas Syiah Kuala, 29 April 2026: jejak defacement judi online, 35 surel terekspos, dan 893 subdomain yang dipetakan secara pasif.">
+<meta name="twitter:description" content="Arsip laporan disclosure keamanan Universitas Syiah Kuala, 29 April 2026: jejak defacement judi online, 35 surel terekspos, dan 893 subdomain yang dipetakan secara pasif; plus temuan kritis sistem pembayaran H2H (28 Sep 2026, versi redaksi).">
 <meta name="twitter:image" content="https://report-fraud.pages.dev/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -54,6 +54,7 @@
       <li><a href="#temuan"><span>Temuan A — Defacement</span></a></li>
       <li><a href="#temuan-b"><span>Temuan B — Surel terekspos</span></a></li>
       <li><a href="#temuan-c"><span>Temuan C — Attack surface</span></a></li>
+      <li><a href="#temuan-d"><span>Temuan D — Pembayaran H2H</span></a></li>
       <li><a href="#penjelajah"><span>Penjelajah subdomain</span></a></li>
       <li><a href="#mitigasi"><span>Rekomendasi mitigasi</span></a></li>
       <li><a href="#metodologi"><span>Metodologi &amp; ruang lingkup</span></a></li>
@@ -79,6 +80,7 @@
       </dl>
 
       <ul class="stats" aria-label="Angka utama laporan">
+        <li><strong>1</strong><span>temuan KRITIS</span></li>
         <li><strong>1</strong><span>temuan TINGGI</span></li>
         <li><strong>2</strong><span>temuan SEDANG</span></li>
         <li><strong>35</strong><span>surel terekspos</span></li>
@@ -109,7 +111,7 @@
     <section class="section" id="temuan" aria-labelledby="temuan-judul">
       <p class="eyebrow">RF-USK-2026-0429 · Laporan Keamanan USK · 29 April 2026</p>
       <h2 id="temuan-judul">Temuan</h2>
-      <p class="section-intro">Tiga temuan dari pemindaian pasif 29 April 2026. Bukti di bawah ini dikutip apa adanya dari laporan — termasuk URL yang saat ini kemungkinan sudah 404.</p>
+      <p class="section-intro">Empat temuan — A–C dari pemindaian pasif 29 April 2026, D dari disclosure lanjutan 28 September 2026 (versi redaksi). Bukti di bawah ini dikutip apa adanya dari laporan — termasuk URL yang saat ini kemungkinan sudah 404.</p>
 
       <article class="finding finding-high" aria-labelledby="temuan-a-judul">
         <header class="finding-head">
@@ -184,6 +186,130 @@
         </ul>
         <p class="finding-note">Pemetaan lengkap 893 host dan alamat IP terkait dilampirkan secara utuh pada dokumen pendukung. <a href="#penjelajah">Jelajahi daftarnya di bawah</a>.</p>
       </article>
+
+      <article class="finding finding-crit" id="temuan-d" aria-labelledby="temuan-d-judul">
+        <header class="finding-head">
+          <span class="finding-letter" aria-hidden="true">D</span>
+          <div>
+            <h3 id="temuan-d-judul">Eksposur Dump SQL Sistem Pembayaran H2H</h3>
+            <p class="finding-cat">171.235 transaksi + 15.000 PIN terekspos lewat direktori /db/ — h2h.usk.ac.id</p>
+          </div>
+          <span class="sev sev-crit">Tingkat keparahan: KRITIS</span>
+        </header>
+        <p>Direktori <code>/db/</code> di <code>h2h.usk.ac.id</code> (Apache 2.4.58, CodeIgniter) terekspos lewat autoindex: permintaan <code>GET /db/</code> mengembalikan 200 beserta daftar berkas. Dua dump SQL lengkap ada di sana — <code>h2h.sql</code> (18 KB: skema + konfigurasi + kredensial pengguna) dan <code>exubp.sql</code> (24 MB: 171.235 transaksi pembayaran + 15.000 PIN). Temuan ini ditemukan <strong>28 September 2026</strong>, setelah laporan 29 April 2026 — versinya <strong>redaksi</strong> (lihat pita di bawah).</p>
+        <h4>Bukti</h4>
+        <ul class="evidence">
+          <li>
+            <code>GET /db/ → 200</code>
+            <span>autoindex aktif, dua dump terdaftar</span>
+          </li>
+          <li>
+            <code>h2h.sql (18 KB)</code>
+            <span>skema + konfigurasi + kredensial pengguna</span>
+          </li>
+          <li>
+            <code>exubp.sql (24 MB)</code>
+            <span>171.235 transaksi + 15.000 PIN</span>
+          </li>
+          <li>
+            <code>tb_user</code>
+            <span>3 akun admin, hash MD5 tanpa salt (disensor)</span>
+          </li>
+          <li>
+            <code>trx_data</code>
+            <span>skema: trx_data_id, trx_time_stamp, bill_data_id, Channel_ID, Response_Code, Response_Message, Transaction_ID, Payment_Amount, event</span>
+          </li>
+          <li>
+            <code>pin_lib</code>
+            <span>skema: autoid, pin_id, pin_pin, pin_paid_flag, reversed_flag, Transaction_ID, paid_type</span>
+          </li>
+          <li>
+            <code>tb_web_service</code>
+            <span>endpoint API internal H2H (host internal disensor)</span>
+          </li>
+          <li>
+            <code>BSI — Bank Syariah Indonesia</code>
+            <span>mitra bank aktif</span>
+          </li>
+        </ul>
+        <div class="redact" role="group" aria-label="Kredensial disensor: 3 akun admin">
+          <span class="redact-bar" aria-hidden="true"></span>
+          <span class="redact-bar redact-bar-s" aria-hidden="true"></span>
+          <span class="redact-bar" aria-hidden="true"></span>
+          <span class="redact-count">× 3 akun admin — NIP + hash MD5 disensor</span>
+        </div>
+        <p class="finding-note">Nilai per orang juga <strong>tidak ditampilkan</strong>: NIK, PIN, nama pembayar, dan nilai transaksi contoh. Dua dari tiga hash MD5 berhasil di-crack karena password mengikuti pola yang mudah ditebak dari identitas pemilik akun — polanya yang harus dihentikan, bukan nilainya yang disebar.</p>
+        <h4>Ekspor laporan pembayaran — agregat per jenis pendaftaran</h4>
+        <p>Dari ekspor laporan pembayaran, terhitung <strong>3.629 baris</strong> dalam 24 jenis pendaftaran. Rincian lengkapnya ada di <a href="evidence/h2h-payments-counts.txt" download>evidence/h2h-payments-counts.txt</a>:</p>
+        <div class="table-scroll">
+          <table class="counts-table">
+            <thead>
+              <tr><th scope="col">Jenis</th><th scope="col">Pendaftaran</th><th scope="col">Baris</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td>Pend D3</td><td>113</td></tr>
+              <tr><td>2</td><td>Pend PFKH</td><td>0</td></tr>
+              <tr><td>3</td><td>Pend PPI</td><td>62</td></tr>
+              <tr><td>4</td><td>Pend PPDS</td><td>231</td></tr>
+              <tr><td>5</td><td>Pend S2</td><td>513</td></tr>
+              <tr><td>6</td><td>Pend S3</td><td>140</td></tr>
+              <tr><td>7</td><td>Pend PPApt</td><td>114</td></tr>
+              <tr><td>8</td><td>Pend PPAr</td><td>13</td></tr>
+              <tr><td>9</td><td>Pend Prestasi</td><td>1.284</td></tr>
+              <tr><td>10</td><td>Pend Prof Dokter</td><td>0</td></tr>
+              <tr><td>11</td><td>Pend PSDKU</td><td>10</td></tr>
+              <tr><td>12</td><td>Pend Cadangan</td><td>455</td></tr>
+              <tr><td>13</td><td>Pend S2 KKS</td><td>88</td></tr>
+              <tr><td>14</td><td>Pend S3 KS</td><td>35</td></tr>
+              <tr><td>15</td><td>Pend S2 Prestasi</td><td>52</td></tr>
+              <tr><td>16</td><td>Pend S3 Prestasi</td><td>227</td></tr>
+              <tr><td>17</td><td>Pend D3 Bener Meriah</td><td>0</td></tr>
+              <tr><td>18</td><td>Pend S1</td><td>0</td></tr>
+              <tr><td>19</td><td>Pend Fast Track</td><td>177</td></tr>
+              <tr><td>20</td><td>Pend Prof Psikologi</td><td>23</td></tr>
+              <tr><td>21</td><td>Pend Prof Dokter Hewan</td><td>92</td></tr>
+              <tr><td>22</td><td>Pend Prof Ners</td><td>0</td></tr>
+              <tr><td>23</td><td>Pend S1 NonGelar</td><td>0</td></tr>
+              <tr><td>24</td><td>Pend Prof Dokter Gigi</td><td>0</td></tr>
+            </tbody>
+            <tfoot>
+              <tr><td></td><td>Total</td><td>3.629</td></tr>
+            </tfoot>
+          </table>
+        </div>
+        <h4>Dampak</h4>
+        <ul>
+          <li><strong>Eksposur massal data pribadi + keuangan:</strong> 171 ribu transaksi pembayaran + 15 ribu PIN.</li>
+          <li><strong>Kredensial bocor:</strong> 3 akun admin memakai hash MD5 tanpa salt — bisa di-crack.</li>
+          <li><strong>Pemetaan infrastruktur internal:</strong> endpoint API H2H internal membuka layout jaringan internal.</li>
+          <li><strong>Potensi penipuan pembayaran:</strong> pustaka PIN + ID transaksi bisa diputar ulang / dipalsukan.</li>
+          <li><strong>Pelanggaran regulasi:</strong> UU PDP — data keuangan + data pribadi terekspos publik.</li>
+          <li><strong>Pengambilalihan admin terkonfirmasi:</strong> satu akun admin berhasil dipakai login lewat <code>/login/dologin</code> + <code>/move/domove</code> hingga mengakses dashboard admin penuh (mitra, tarif, laporan pembayaran, manajemen pembayaran, dan menu lainnya).</li>
+        </ul>
+        <h4>Reproduksi (generik, tanpa kredensial)</h4>
+        <ol>
+          <li>Minta daftar direktori <code>/db/</code> — autoindex mengembalikan 200 dan menampilkan dua dump SQL.</li>
+          <li>Unduh dump <code>h2h.sql</code> dan <code>exubp.sql</code> dari <code>/db/</code>.</li>
+          <li>Baca tabel <code>tb_user</code> dari <code>h2h.sql</code> — tiga akun admin dengan hash MD5 tanpa salt.</li>
+          <li>Crack hash MD5 (pola password lemah) sampai mendapat kredensial login yang valid.</li>
+          <li>Login lewat <code>/login/dologin</code>, lalu <code>POST /move/domove</code> — sesi berubah ke peran Admin.</li>
+          <li>Akses dashboard admin (<code>/public/laporanpembayaran</code> dan menu lainnya); ekspor laporan per jenis pendaftaran mengembalikan tabel data pembayaran lengkap.</li>
+        </ol>
+        <h4>Remediasi</h4>
+        <ol>
+          <li>Hapus <code>/db/</code> dari web root segera.</li>
+          <li>Putar semua kredensial di <code>tb_user</code> (paksa reset password — jangan pakai NIP sebagai password).</li>
+          <li>Putar kunci API H2H dengan BSI.</li>
+          <li>Audit log akses untuk unduhan <code>/db/</code>.</li>
+          <li>Terapkan kontrol akses pada semua backup database.</li>
+          <li>Naikkan hashing password (MD5 → bcrypt/argon2).</li>
+          <li>Terapkan rate limiting pada endpoint login.</li>
+          <li>Tegakkan HTTPS (saat ini masih bisa diakses lewat HTTP).</li>
+          <li>Tambahkan token CSRF pada semua form.</li>
+          <li>Terapkan manajemen sesi yang benar (rotasi saat login, timeout, ikat IP).</li>
+        </ol>
+        <p class="finding-note">Dump SQL mentah <strong>tidak dilampirkan</strong> di repo ini — hanya temuan (versi redaksi) dan hitungan agregat. Baca temuan lengkap: <a href="findings/F-006-h2h-sqldump.md">findings/F-006-h2h-sqldump.md</a>. Checklist redaksi yang dipakai: <a href="docs/templates/finding-template.md">docs/templates/finding-template.md</a>.</p>
+      </article>
     </section>
 
     <!-- ═══ PENJELAJAH ═══ -->
@@ -222,7 +348,7 @@
     <section class="section" id="mitigasi" aria-labelledby="mitigasi-judul">
       <p class="eyebrow">RF-USK-2026-0429 · Laporan Keamanan USK · 29 April 2026</p>
       <h2 id="mitigasi-judul">Rekomendasi mitigasi</h2>
-      <p class="section-intro">Tiga langkah preventif yang disarankan laporan, berdasarkan security best practices. Status tindak lanjut di USK tidak diketahui dari laporan ini — situs ini tidak mengklaim satu pun sudah diperbaiki.</p>
+      <p class="section-intro">Tiga langkah preventif yang disarankan laporan 29 April 2026, plus satu langkah dari temuan D (F-006, September 2026), berdasarkan security best practices. Status tindak lanjut di USK tidak diketahui dari laporan ini — situs ini tidak mengklaim satu pun sudah diperbaiki.</p>
       <ol class="mitigations">
         <li>
           <span class="mit-num" aria-hidden="true">1</span>
@@ -248,6 +374,14 @@
             <p class="mit-status"><span class="status-chip">Diajukan dalam laporan</span></p>
           </div>
         </li>
+        <li>
+          <span class="mit-num" aria-hidden="true">4</span>
+          <div>
+            <h3>Penutupan eksposur dump SQL H2H</h3>
+            <p>Menghapus <code>/db/</code> dari web root, memutar semua kredensial dan kunci API H2H, menaikkan hashing password dari MD5 ke bcrypt/argon2, dan mengaudit log akses unduhan dump — rincian 10 langkah ada di <a href="#temuan-d">temuan D</a>.</p>
+            <p class="mit-status"><span class="status-chip">Diajukan dalam temuan F-006</span></p>
+          </div>
+        </li>
       </ol>
     </section>
 
@@ -258,9 +392,10 @@
       <dl class="method">
         <div><dt>Metode</dt><dd>Open Source Intelligence (OSINT) — pemindaian pasif dari sumber publik, memakai perangkat lunak sumber terbuka.</dd></div>
         <div><dt>Tanggal pemindaian</dt><dd>29 April 2026</dd></div>
+        <div><dt>Temuan D</dt><dd>Disclosure lanjutan 28 September 2026 (F-006, sistem pembayaran H2H) — ditambahkan ke arsip ini dalam versi redaksi, bukan bagian laporan 29 April 2026.</dd></div>
         <div><dt>Target</dt><dd>usk.ac.id (Universitas Syiah Kuala)</dd></div>
         <div><dt>Sifat data</dt><dd>Data mentah dilampirkan murni sebagai referensi tim UPT TIK USK dalam melakukan peninjauan keamanan infrastruktur jaringan.</dd></div>
-        <div><dt>Batas laporan</dt><dd>Temuan mencerminkan kondisi 29 April 2026. Situs ini mengarsipkan laporan apa adanya — bukan alat pemindai, bukan penilaian kondisi USK saat ini, dan tidak menambahkan temuan baru.</dd></div>
+        <div><dt>Batas laporan</dt><dd>Temuan A–C mencerminkan kondisi 29 April 2026; temuan D mencerminkan kondisi 28 September 2026. Situs ini mengarsipkan laporan apa adanya — bukan alat pemindai, bukan penilaian kondisi USK saat ini, dan tidak menambahkan temuan dari pemindaian sendiri.</dd></div>
         <div><dt>Catatan data</dt><dd>Header lampiran mengklaim 19 alamat IP server, tetapi Bagian 2 lampiran hanya memuat 17 baris alamat. Selisih ini dicatat apa adanya di <a href="docs/API.md">docs/API.md</a> dan dicek otomatis oleh <code>scripts/check-data.mjs</code> — bukan dikoreksi diam-diam.</dd></div>
       </dl>
     </section>
@@ -269,7 +404,7 @@
     <section class="section" id="berkas" aria-labelledby="berkas-judul">
       <p class="eyebrow">RF-USK-2026-0429 · Laporan Keamanan USK · 29 April 2026</p>
       <h2 id="berkas-judul">Berkas &amp; data mentah</h2>
-      <p class="section-intro">Dua berkas asli dari repositori — dipindahkan dari subfolder <code>unsyiah/</code> ke root repo saat restructure (lihat PR), isinya tidak diubah.</p>
+      <p class="section-intro">Dua berkas asli dari repositori — dipindahkan dari subfolder <code>unsyiah/</code> ke root repo saat restructure (lihat PR), isinya tidak diubah — plus temuan F-006 (versi redaksi) dan hitungan agregatnya.</p>
       <div class="files">
         <article class="file-card">
           <h3>Security_Disclosure_USK_2026.pdf</h3>
@@ -290,6 +425,26 @@
             <div><dt>Bagian</dt><dd>3 (surel · IP · host)</dd></div>
           </dl>
           <a class="btn btn-primary" href="full_hosts_scan_usk.txt" download>Unduh data mentah</a>
+        </article>
+        <article class="file-card">
+          <h3>F-006 — Dump SQL H2H (redaksi)</h3>
+          <p>Temuan kritis 28 September 2026: dump SQL sistem pembayaran H2H terekspos — versi redaksi, tanpa data per orang.</p>
+          <dl class="file-meta">
+            <div><dt>Ukuran</dt><dd>6.614 byte</dd></div>
+            <div><dt>Keparahan</dt><dd>KRITIS</dd></div>
+            <div><dt>Format</dt><dd>Markdown</dd></div>
+          </dl>
+          <a class="btn btn-primary" href="findings/F-006-h2h-sqldump.md" download>Unduh temuan F-006</a>
+        </article>
+        <article class="file-card">
+          <h3>h2h-payments-counts.txt</h3>
+          <p>Hitungan agregat ekspor laporan pembayaran: 3.629 baris dalam 24 jenis pendaftaran.</p>
+          <dl class="file-meta">
+            <div><dt>Ukuran</dt><dd>1.127 byte</dd></div>
+            <div><dt>Baris</dt><dd>24 jenis + total</dd></div>
+            <div><dt>Total</dt><dd>3.629</dd></div>
+          </dl>
+          <a class="btn btn-primary" href="evidence/h2h-payments-counts.txt" download>Unduh hitungan agregat</a>
         </article>
         <article class="file-card">
           <h3>Repositori GitHub</h3>

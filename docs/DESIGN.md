@@ -3,7 +3,7 @@
 > Ditulis SEBELUM coding (standar anti-slop P1). Referensi dulu, baru bangun.
 > Produk: situs arsip laporan disclosure keamanan USK (29 April 2026) —
 > bukan app transaksional. Fungsinya: menyajikan laporan resmi (ringkasan,
-> 3 temuan + bukti, 3 rekomendasi), penjelajah 893 subdomain dari lampiran,
+> 4 temuan + bukti, 4 rekomendasi), penjelajah 893 subdomain dari lampiran,
 > dan unduh berkas asli (PDF + data mentah). Semua angka dari laporan.
 
 ## Referensi
@@ -105,10 +105,16 @@ Beda 5/5 sumbu (minimal yang disyaratkan: 3/5).
 - Tidak ada gradient, tidak ada font Inter/Roboto/system, tidak ada
   hero tengah + 3 kartu identik, tidak ada emoji sebagai ikon fungsi
   (ikon SVG satu bobot), tidak ada statistik vanity — semua angka
-  (1 TINGGI, 2 SEDANG, 35 surel, 893 subdomain) dikutip dari laporan
-  dan dilabeli sumbernya.
+  (1 KRITIS, 1 TINGGI, 2 SEDANG, 35 surel, 893 subdomain, 171.235
+  transaksi) dikutip dari laporan dan dilabeli sumbernya.
 - Data contoh dilabeli jujur: klasifikasi penjelajah subdomain adalah
   pengelompokan otomatis berdasarkan nama host (aturan tertulis di
   `docs/API.md`), bukan label dari laporan.
 - Alamat surel individual tidak dirender di UI (lihat "Pita redaksi"
   di atas) — keputusan privasi, dicatat di PRD + PR.
+- Temuan D (F-006, PR #2) memakai ulang pola temuan TINGGI yang sama
+  (border kiri Merah Segel + chip keparahan; kelas sendiri
+  `.finding-crit` / `.sev-crit` supaya teks chip "KRITIS" tidak
+  tercampur asersi e2e "TINGGI") dan memperluas motif pita redaksi ke
+  kredensial (NIP + hash disensor) + tabel agregat 24 jenis di dalam
+  wadah scroll (halaman tetap tanpa scroll horizontal di 390px).

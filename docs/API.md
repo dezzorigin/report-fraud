@@ -15,6 +15,8 @@ dan endpoint statis yang disajikan Cloudflare Pages.
 | `/og-image.png` | Screenshot hero 1200x630 | `image/png` |
 | `/Security_Disclosure_USK_2026.pdf` | Laporan asli (94.459 byte) | `application/pdf` |
 | `/full_hosts_scan_usk.txt` | Data mentah (21.169 byte) | `text/plain` |
+| `/findings/F-006-h2h-sqldump.md` | Temuan F-006, versi redaksi | `text/markdown` |
+| `/evidence/h2h-payments-counts.txt` | Hitungan agregat payment (1.127 byte) | `text/plain` |
 
 Tidak ada endpoint lain. Tidak ada query parameter yang diproses server.
 
@@ -94,3 +96,22 @@ Header file mengklaim 19. Situs menampilkan angka **terhitung (17)**
 di kartu berkas dan mencatat selisihnya di sini + di bagian Metodologi
 halaman. `scripts/check-data.mjs` mengeluarkan peringatan untuk selisih
 ini (bukan kegagalan build — datanya milik sumber, bukan milik situs).
+
+## 6. Format `evidence/h2h-payments-counts.txt` (temuan F-006)
+
+Hitungan agregat ekspor laporan pembayaran H2H, 24 jenis pendaftaran:
+
+```
+jenis= 1 Pend D3                      rows=113
+...
+jenis=24 Pend Prof Dokter Gigi        rows=0
+---
+TOTAL rows=3629
+```
+
+Satu baris per jenis: `jenis= <N> <nama> rows=<jumlah>`, lalu baris
+`TOTAL rows=3629`. Jumlah semua baris jenis harus sama dengan TOTAL
+(diikat `scripts/check-data.mjs` — bila berkas berubah, CI gagal
+sampai angka diperbarui dengan sadar). Tabel di temuan D (index.html)
+menyalin angka ini apa adanya; berkasnya sendiri bisa diunduh sebagai
+bukti. Berkas ini hanya agregat — tidak ada data per orang di dalamnya.

@@ -4,6 +4,8 @@ Arsip publik laporan *responsible disclosure* keamanan Universitas Syiah
 Kuala (29 April 2026): jejak defacement judi online, 35 surel terekspos,
 dan 893 subdomain yang dipetakan secara pasif — disajikan sebagai situs
 yang bisa dibaca, dicari, dan diverifikasi terhadap berkas aslinya.
+Plus temuan kritis lanjutan F-006 (28 September 2026): dump SQL sistem
+pembayaran H2H terekspos — dipublikasikan dalam versi redaksi.
 
 **Live:** https://report-fraud.pages.dev/
 **Repo:** https://github.com/dezzorigin/report-fraud
@@ -21,9 +23,10 @@ pasif atas `usk.ac.id`. Situs ini mengarsipkan laporan itu apa adanya:
 | A — Riwayat Web Defacement & SEO Poisoning | **TINGGI** | Jejak injeksi judi online (`BABEJUDI/`) di `fkep.usk.ac.id` dan `siakadup3ai.usk.ac.id`, plus backlink togel di `sibela` dan `sippan` |
 | B — Eksposur Data Publik | SEDANG | 35 alamat surel institusi fungsional terekspos (30 di @usk.ac.id, 5 di subdomain) |
 | C — Pemetaan Subdomain / Attack Surface | SEDANG | 893 subdomain/host; aset berisiko tinggi `dev.fk.usk.ac.id` dan `perwaliandev.usk.ac.id` |
+| D — Eksposur Dump SQL Sistem Pembayaran H2H (F-006, 28 Sep 2026) | **KRITIS** | Direktori `/db/` di `h2h.usk.ac.id` terekspos: 171.235 transaksi + 15.000 PIN; 3 akun admin MD5; pengambilalihan admin terkonfirmasi — versi redaksi, tanpa data per orang |
 
-Plus 3 rekomendasi mitigasi (file auditing, pembatasan lingkungan
-development, audit DNS) dan penjelajah 893 host yang bisa dicari dan
+Plus 4 rekomendasi mitigasi (file auditing, pembatasan lingkungan
+development, audit DNS, penutupan eksposur dump H2H) dan penjelajah 893 host yang bisa dicari dan
 difilter.
 
 ![Temuan A — bukti defacement](docs/screenshots/temuan-desktop.png)
@@ -43,6 +46,8 @@ Layanan 594, Lainnya 4). Data dimuat langsung dari
 |---|---|
 | `Security_Disclosure_USK_2026.pdf` | Laporan utama (2 halaman, A4, 94.459 byte) |
 | `full_hosts_scan_usk.txt` | Data mentah (979 baris: 35 surel, 17 alamat IP terhitung, 893 host) |
+| `findings/F-006-h2h-sqldump.md` | Temuan F-006 (28 Sep 2026, KRITIS) — versi redaksi (6.614 byte) |
+| `evidence/h2h-payments-counts.txt` | Hitungan agregat ekspor laporan pembayaran (24 jenis, total 3.629 baris) |
 
 Kedua berkas dipindahkan byte-identik dari subfolder `unsyiah/` ke root
 repo saat restructure (PR #1) — isinya tidak diubah.
@@ -80,9 +85,18 @@ npm run smoke        # smoke folder repo (persis yang di-deploy)
 - Alamat surel individual **tidak ditampilkan** di halaman ini — hanya
   agregat (35; 30 langsung + 5 subdomain). Daftar lengkap tetap ada di
   lampiran mentah untuk tim UPT TIK USK.
-- Temuan mencerminkan kondisi **29 April 2026** — bukan status USK saat
-  ini. Situs ini arsip, bukan alat pemindai, dan tidak menambah temuan
-  baru.
+- Tidak ada branding tim/perusahaan di repo ini — situs tampil sebagai
+  kerja pentester independen (dicek otomatis di CI).
+- Temuan mencerminkan kondisi **29 April 2026** (temuan A–C) dan
+  **28 September 2026** (temuan D, F-006) — bukan status USK saat
+  ini. Situs ini arsip, bukan alat pemindai, dan tidak menambahkan
+  temuan dari pemindaian sendiri; temuan D berasal dari disclosure
+  lanjutan yang diserahkan penulis, dipublikasikan dalam versi redaksi.
+- Temuan D (F-006) **disensor**: NIP, nama admin, hash password, NIK,
+  PIN, nama pembayar, dan host internal tidak ditampilkan — hanya
+  agregat, struktur skema, dampak, dan remediasi. Dump SQL mentah
+  tidak dilampirkan. Aturan redaksi: `docs/templates/finding-template.md`;
+  dicek otomatis di CI (`scripts/check-static.mjs`).
 - Header lampiran mengklaim 19 alamat IP server, tetapi Bagian 2 hanya
   memuat 17 baris. Selisih ini dicatat di `docs/API.md` dan bagian
   Metodologi — bukan dikoreksi diam-diam.

@@ -44,6 +44,18 @@ try {
   check(home.body.includes('github.com/dezzorigin/report-fraud'), '/ tidak mengandung tautan GitHub repo');
   check(home.body.includes('full_hosts_scan_usk.txt'), '/ tidak mereferensikan data mentah');
   check(home.body.includes('Security_Disclosure_USK_2026.pdf'), '/ tidak mereferensikan PDF laporan');
+  check(home.body.includes('temuan-d'), '/ tidak mengandung temuan D (F-006)');
+  check(home.body.includes('171.235'), '/ temuan D tidak menampilkan agregat transaksi');
+
+  const f006 = await get('/findings/F-006-h2h-sqldump.md');
+  check(f006.status === 200, `/findings/F-006-h2h-sqldump.md -> HTTP ${f006.status}`);
+  check(f006.body.includes('F-006'), 'temuan F-006 tidak memuat judulnya sendiri');
+  check(!/\b\d{16,18}\b/.test(f006.body), 'temuan F-006 memuat pola NIP (redaksi bocor)');
+  check(!/\b[0-9a-f]{32}\b/i.test(f006.body), 'temuan F-006 memuat hash MD5 (redaksi bocor)');
+
+  const counts = await get('/evidence/h2h-payments-counts.txt');
+  check(counts.status === 200, `/evidence/h2h-payments-counts.txt -> HTTP ${counts.status}`);
+  check(counts.body.includes('TOTAL rows=3629'), 'hitungan agregat payment tidak memuat TOTAL 3629');
 
   const og = await get('/og-image.png');
   if (!existsSync(join(ROOT, 'og-image.png'))) {

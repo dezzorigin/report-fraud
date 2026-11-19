@@ -188,6 +188,7 @@ h4 { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacin
   padding: 28px; margin-bottom: 24px;
 }
 .finding-high { border-left: 5px solid var(--seal); }
+.finding-crit { border-left: 5px solid var(--seal); }
 .finding-med { border-left: 5px solid var(--ochre); }
 .finding-head {
   display: flex; gap: 16px; align-items: flex-start; margin-bottom: 16px;
@@ -205,6 +206,7 @@ h4 { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacin
   text-transform: uppercase; border: 1px solid currentColor; padding: 6px 10px;
 }
 .sev-high { color: var(--seal); }
+.sev-crit { color: var(--seal); }
 .sev-med { color: var(--ochre-ink); }
 .finding p { max-width: 70ch; }
 .finding-note { font-size: 14px; color: var(--ash); margin-bottom: 0; }
@@ -240,6 +242,15 @@ h4 { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacin
   border: 1px solid var(--ink); background: var(--paper);
   padding: 18px; margin: 20px 0 12px;
 }
+
+/* Tabel hitungan agregat (temuan D) — scroll di dalam wadah supaya
+   halaman tetap tanpa scroll horizontal di 390px. */
+.table-scroll { overflow-x: auto; margin: 0 0 16px; border: 1px solid var(--ink); }
+.counts-table { width: 100%; border-collapse: collapse; background: var(--surface); font-feature-settings: "tnum"; }
+.counts-table th, .counts-table td { padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--hairline); font-size: 15px; }
+.counts-table thead th { background: var(--ink); color: var(--paper); font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; }
+.counts-table td:last-child, .counts-table th:last-child { text-align: right; }
+.counts-table tfoot td { font-weight: 700; border-top: 2px solid var(--ink); border-bottom: 0; }
 .redact-bar { display: inline-block; width: 132px; height: 20px; background: var(--ink); }
 .redact-bar-s { width: 84px; }
 .redact-at { font-weight: 600; }

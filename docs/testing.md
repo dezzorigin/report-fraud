@@ -91,28 +91,36 @@ npm run make-video       # docs/demo/demo.mp4 (ffmpeg zoompan)
 ```
 
 **STATUS 19 Nov 2026: langkah ini TERBLOKIR di VM dev** (Chrome mati —
-`MAP_SHARED` EPERM, lihat "Batas VM dev" di atas). Screenshot +
-`og-image.png` 1200x630 + video demo dibuat dari **browser live
-terhadap situs Pages yang sudah deploy** (bukan dari VM), lalu di-commit
-sebagai follow-up ke PR ini sebelum merge. Sampai berkas itu ada,
-`check-static.mjs` gagal di satu butir (`og-image.png tidak ada`) —
-itu ekspektasi, bukan cacat repo; CI tetap merah di butir itu sampai
-follow-up mendarat.
-
-Adegan video: hero desktop, temuan desktop, penjelajah desktop
-(cari "dev"), penjelajah mobile, berkas desktop — masing-masing 5 detik,
-1280x720.
+`MAP_SHARED` EPERM, lihat "Batas VM dev" di atas). `og-image.png`
+1200x630 sudah ada — digambar PIL mengikuti palet situs (bukan
+screenshot) saat follow-up PR #1, dan lolos gate check-static + e2e.
+Screenshot `docs/screenshots/` + video demo tetap dibuat dari
+**browser live terhadap situs Pages yang sudah deploy** (bukan dari
+VM), lalu di-commit sebagai follow-up. Adegan video: hero desktop,
+temuan desktop, penjelajah desktop (cari "dev"), penjelajah mobile,
+berkas desktop — masing-masing 5 detik, 1280x720.
 
 ## Yang dicek e2e
 
 - Hero + 9 tag OG/Twitter + tautan GitHub + tautan unduh PDF.
-- 3 kartu temuan, badge TINGGI/SEDANG, tombol salin → "Disalin",
-  surel individual tidak dirender.
+- 4 kartu temuan, badge KRITIS/TINGGI/SEDANG, tombol salin → "Disalin",
+  surel individual tidak dirender; temuan D menampilkan agregat H2H
+  dan lolos asersi redaksi (tanpa pola NIP/hash di render).
 - Penjelajah: muat 893 host; cari `dev` → 6; filter Webmail → 8;
   filter Fakultas + cari `simkuliah` → 1 (`simkuliah.fkip.usk.ac.id`).
 - Berkas: TXT 200 + memuat `PART 3`; PDF 200 + `application/pdf`;
-  og-image 200 + `image/*`.
+  og-image 200 + `image/*`; temuan F-006 200 + lolos redaksi;
+  hitungan agregat 200 + memuat `TOTAL rows=3629`.
 - Mobile: tanpa scroll horizontal (`scrollWidth - clientWidth == 0`).
+
+## Gate redaksi (PR #2)
+
+`scripts/check-static.mjs` menegakkan redaksi F-006: pola NIP
+(16–18 digit), hash MD5 (32 heksadesimal), dan IPv4 literal di berkas
+temuan dilarang; merek tim/perusahaan dilarang tampil di file mana pun.
+`scripts/check-data.mjs` mengikat agregat payment (24 jenis, total
+3.629). Aturan lengkap + checklist manual:
+`docs/templates/finding-template.md`.
 
 ## Gate 7 sumbu (sebelum merge)
 
