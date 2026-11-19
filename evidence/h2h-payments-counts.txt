@@ -1,0 +1,26 @@
+jenis= 1 Pend D3                      rows=113
+jenis= 2 Pend PFKH                    rows=0
+jenis= 3 Pend PPI                     rows=62
+jenis= 4 Pend PPDS                    rows=231
+jenis= 5 Pend S2                      rows=513
+jenis= 6 Pend S3                      rows=140
+jenis= 7 Pend PPApt                   rows=114
+jenis= 8 Pend PPAr                    rows=13
+jenis= 9 Pend Prestasi                rows=1284
+jenis=10 Pend Prof Dokter             rows=0
+jenis=11 Pend PSDKU                   rows=10
+jenis=12 Pend Cadangan                rows=455
+jenis=13 Pend S2 KKS                  rows=88
+jenis=14 Pend S3 KS                   rows=35
+jenis=15 Pend S2 Prestasi             rows=52
+jenis=16 Pend S3 Prestasi             rows=227
+jenis=17 Pend D3 Bener Meriah         rows=0
+jenis=18 Pend S1                      rows=0
+jenis=19 Pend Fast Track              rows=177
+jenis=20 Pend Prof Psikologi          rows=23
+jenis=21 Pend Prof Dokter Hewan       rows=92
+jenis=22 Pend Prof Ners               rows=0
+jenis=23 Pend S1 NonGelar             rows=0
+jenis=24 Pend Prof Dokter Gigi        rows=0
+---
+TOTAL rows=3629

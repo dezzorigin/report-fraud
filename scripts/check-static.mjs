@@ -7,6 +7,10 @@
 //      yang ter-commit; tanpa secret kasar; tanpa alamat surel individual
 //      dari lampiran yang dirender di HTML/JS (keputusan privasi — hanya
 //      agregat yang boleh tampil; daftar lengkap tetap di lampiran TXT).
+//      Sejak PR #2 (temuan F-006): tanpa NIP (16–18 digit), tanpa hash
+//      MD5 (32 heksadesimal), tanpa host/IP internal literal di berkas
+//      temuan — data per orang hanya agregat, sesuai checklist redaksi
+//      docs/templates/finding-template.md.
 //   3. Link preview (og-preview.md): index.html wajib memuat SEMUA tag
 //      og:/twitter: dan og-image.png wajib ada (1200x630, dari screenshot).
 // Keluar 1 bila ada satu saja temuan.
@@ -96,6 +100,52 @@ for (const f of [join(ROOT, 'index.html'), join(ROOT, 'app.js'), join(ROOT, 'sty
 // Berkas asli wajib ada di root (hasil restructure dari unsyiah/).
 for (const f of ['Security_Disclosure_USK_2026.pdf', 'full_hosts_scan_usk.txt']) {
   if (!existsSync(join(ROOT, f))) fail(`${f} tidak ada di root — restructure belum lengkap`);
+}
+
+// Berkas temuan F-006 wajib ada (PR #2): temuan (redaksi) + hitungan
+// agregat + template temuan.
+for (const f of ['findings/F-006-h2h-sqldump.md', 'evidence/h2h-payments-counts.txt', 'docs/templates/finding-template.md']) {
+  if (!existsSync(join(ROOT, f))) fail(`${f} tidak ada — temuan F-006 belum lengkap`);
+}
+
+// Redaksi F-006 (PR #2): NIP / hash MD5 / host internal TIDAK BOLEH
+// bocor ke berkas yang dipublikasi. NPM pelapor (15 digit) bukan NIP
+// dan tidak kena pola 16–18 digit. Cek IPv4 literal hanya di berkas
+// temuan (findings/template/evidence) — index.html dikecualikan dari
+// pola itu karena data path SVG logo GitHub memicu false-positive.
+const REDACT_FILES = [join(ROOT, 'index.html'), join(ROOT, 'app.js'), join(ROOT, 'styles.css')];
+for (const dir of ['findings', join('docs', 'templates'), 'evidence']) {
+  const d = join(ROOT, dir);
+  if (existsSync(d)) {
+    for (const e of readdirSync(d)) {
+      if (/\.(md|txt)$/.test(e)) REDACT_FILES.push(join(d, e));
+    }
+  }
+}
+const NIP_RE = /\b\d{16,18}\b/g;
+const MD5_RE = /\b[0-9a-f]{32}\b/gi;
+const IPV4_RE = /\b(?:\d{1,3}\.){3}\d{1,3}\b/g;
+// Merek tim dilarang tampil di repo ini (keputusan Nabil, PR #2): repo
+// harus terbaca sebagai kerja pentester independen, tanpa branding
+// tim/perusahaan apa pun. Pola dibangun dari potongan agar nama merek
+// itu sendiri tidak pernah tertulis di file mana pun.
+const BANNED_BRAND_RE = new RegExp(
+  ['n', 'o', 'x'].join('\\s*') + '[-_\\s]*' + ['n', 'o', 'x'].join('\\s*'),
+  'i',
+);
+for (const f of REDACT_FILES) {
+  if (!existsSync(f)) continue;
+  const src = readFileSync(f, 'utf-8');
+  const rel = f.replace(ROOT + '/', '');
+  const nips = src.match(NIP_RE) || [];
+  if (nips.length > 0) fail(`${rel}: pola NIP (16–18 digit) lolos redaksi: ${nips.slice(0, 2).join(', ')}`);
+  const hashes = src.match(MD5_RE) || [];
+  if (hashes.length > 0) fail(`${rel}: hash MD5 (32 heksadesimal) lolos redaksi`);
+  if (BANNED_BRAND_RE.test(src)) fail(`${rel}: merek tim dilarang tampil di repo ini`);
+  if (/findings|templates|evidence/.test(rel)) {
+    const ips = src.match(IPV4_RE) || [];
+    if (ips.length > 0) fail(`${rel}: alamat IPv4 literal lolos redaksi — pakai placeholder <host-internal>`);
+  }
 }
 
 // Link preview (og-preview.md): semua tag wajib ada di index.html.

@@ -10,6 +10,11 @@
 //     sebagai peringatan (exit tetap 0) dan didokumentasikan di
 //     docs/API.md + index.html (bagian Metodologi). Jangan "memperbaiki"
 //     angka sumber diam-diam.
+//   - Hitungan agregat payment (PR #2, temuan F-006):
+//     evidence/h2h-payments-counts.txt harus memuat 24 jenis
+//     pendaftaran (jenis 1–24, masing-masing sekali), jumlah baris
+//     per jenis harus berjumlah 3.629, dan baris TOTAL harus 3.629.
+//     Angka ini yang tampil di tabel temuan D (index.html).
 // Keluar 1 bila ada satu saja ketidaksesuaian yang mengikat.
 import { readFileSync } from 'node:fs';
 import { join, resolve, dirname } from 'node:path';
@@ -70,10 +75,30 @@ if (ips.length !== 19) {
   warn(`Bagian 2 IP: header mengklaim 19, terhitung ${ips.length} baris — selisih data sumber, dicatat di docs/API.md (bukan kegagalan build)`);
 }
 
+// 4. Hitungan agregat payment F-006 (PR #2): 24 jenis, total 3.629.
+const payText = readFileSync(join(ROOT, 'evidence', 'h2h-payments-counts.txt'), 'utf-8');
+const payLines = payText.split(/\r?\n/);
+const payRows = [];
+let payTotal = null;
+for (const line of payLines) {
+  const m = line.match(/^jenis=\s*(\d+)\s+(.+?)\s+rows=(\d+)\s*$/);
+  if (m) payRows.push({ jenis: Number(m[1]), nama: m[2].trim(), rows: Number(m[3]) });
+  const t = line.match(/^TOTAL rows=(\d+)\s*$/);
+  if (t) payTotal = Number(t[1]);
+}
+if (payRows.length !== 24) fail(`Hitungan payment: terhitung ${payRows.length} jenis, ekspektasi 24`);
+const jenisSet = new Set(payRows.map((r) => r.jenis));
+if (jenisSet.size !== payRows.length || ![...jenisSet].every((j) => j >= 1 && j <= 24)) {
+  fail('Hitungan payment: nomor jenis bukan 1–24 masing-masing sekali');
+}
+const paySum = payRows.reduce((a, r) => a + r.rows, 0);
+if (paySum !== 3629) fail(`Hitungan payment: jumlah baris ${paySum}, ekspektasi 3629`);
+if (payTotal !== 3629) fail(`Hitungan payment: baris TOTAL ${payTotal}, ekspektasi 3629`);
+
 for (const w of warnings) console.warn(`peringatan: ${w}`);
 if (failures.length > 0) {
   console.error('check-data GAGAL:');
   for (const m of failures) console.error(` - ${m}`);
   process.exit(1);
 }
-console.log(`check-data OK (surel 35, host 893, kategori ${JSON.stringify(cats)}, IP terhitung ${ips.length} — klaim header 19)`);
+console.log(`check-data OK (surel 35, host 893, kategori ${JSON.stringify(cats)}, IP terhitung ${ips.length} — klaim header 19; payment 24 jenis, total ${paySum})`);

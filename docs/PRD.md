@@ -8,7 +8,7 @@
 | Produk | Situs arsip laporan disclosure keamanan USK (situs statis) |
 | Status | Proper (P1 #39) — live di Cloudflare Pages |
 | Penanggung Jawab | Nabil Aulia Dika |
-| Versi Dokumen | 2.0 (rewrite total dari template v1.0) |
+| Versi Dokumen | 2.1 (temuan F-006 + template, PR #2) |
 | Tanggal | 19 November 2026 |
 | Laporan yang diarsipkan | Security_Disclosure_USK_2026.pdf, 29 April 2026 |
 | Live | https://report-fraud.pages.dev/ |
@@ -29,6 +29,12 @@ lengkap sebagai halaman web, penjelajah 893 host yang bisa dicari/difilter,
 dan unduh berkas asli. Situs ini **bukan** alat pemindai dan **bukan**
 penilaian kondisi USK saat ini — ia mengarsipkan laporan 29 April 2026 apa
 adanya.
+
+Pada 28 September 2026, disclosure lanjutan menemukan temuan kritis
+keempat (F-006): dump SQL sistem pembayaran H2H terekspos. Temuan ini
+ditambahkan ke arsip (PR #2) dalam **versi redaksi** — tanpa data per
+orang, tanpa dump mentah — beserta template temuan kosong agar temuan
+berikutnya mengikuti aturan redaksi yang sama.
 
 ## 3. Masalah yang Diselesaikan
 
@@ -53,8 +59,10 @@ adanya.
 ## 5. Ruang Lingkup
 
 ### In Scope
-- Halaman arsip: ringkasan eksekutif, 3 temuan + bukti, 3 rekomendasi,
+- Halaman arsip: ringkasan eksekutif, 4 temuan + bukti, 4 rekomendasi,
   metodologi & ruang lingkup, berkas & data mentah.
+- Temuan D (F-006, 28 Sep 2026, KRITIS) dalam versi redaksi + hitungan
+  agregat payment + template temuan kosong (`docs/templates/`).
 - Penjelajah subdomain: cari + 7 filter kategori + paginasi, dimuat dari
   `full_hosts_scan_usk.txt` saat runtime.
 - Unduh berkas asli (PDF + TXT) dari root repo.
@@ -63,10 +71,12 @@ adanya.
   Playwright e2e, smoke folder deploy.
 
 ### Out of Scope
-- Pemindaian baru / temuan baru — situs ini arsip, bukan scanner.
+- Pemindaian baru oleh situs ini — temuan D berasal dari disclosure
+  lanjutan yang diserahkan penulis, bukan dari pemindaian situs.
 - Pelacakan status perbaikan di USK — tidak ada data tindak lanjutnya.
 - Backend, akun, atau database apa pun.
 - Perubahan isi laporan/lampiran (dipindah byte-identik ke root).
+- Publikasi dump mentah / sampel tanpa sensor / kredensial apa pun.
 
 ## 6. Fitur & Persyaratan Fungsional
 
@@ -82,6 +92,8 @@ adanya.
 | F8 | Berkas | Kartu unduh PDF (94.459 byte) + TXT (21.169 byte, 979 baris) + kartu repo GitHub. |
 | F9 | Navigasi | Masthead (Ringkasan/Temuan/Penjelajah/Mitigasi/Berkas + logo GitHub) + rel daftar isi + footer satu kolom. |
 | F10 | Link preview | 9 tag OG/Twitter di `index.html` + `og-image.png` 1200x630 (screenshot asli). |
+| F11 | Temuan D (F-006) | Eksposur dump SQL H2H (KRITIS, 28 Sep 2026) dalam versi redaksi: agregat 171.235 transaksi + 15.000 PIN, skema tabel, dampak, reproduksi generik, 10 remediasi, tabel agregat 24 jenis (total 3.629). Tanpa NIP/nama/hash/NIK/PIN/host internal; dump mentah tidak dilampirkan. |
+| F12 | Template temuan | `docs/templates/finding-template.md`: struktur temuan kosong + checklist redaksi wajib (termasuk larangan merek tim). |
 
 ## 7. Persyaratan Non-Fungsional
 
@@ -91,15 +103,22 @@ adanya.
 - **Keamanan:** tidak ada secret ke-commit (dicek `check-static.mjs`);
   tidak ada backend; tidak ada pelacakan.
 - **Privasi:** alamat surel individual tidak dirender (dicek otomatis);
-  daftar lengkap hanya di lampiran TXT untuk UPT TIK.
+  daftar lengkap hanya di lampiran TXT untuk UPT TIK. Temuan D
+  disensor penuh (NIP, nama admin, hash, NIK, PIN, nama pembayar, host
+  internal tidak tampil; dicek otomatis `check-static.mjs`); dump
+  mentah tidak pernah masuk repo.
 - **Aksesibilitas:** skip link, label pada semua kontrol, `aria-pressed`
   pada chip filter, `aria-live` pada meta hasil, kontras teks lolos AA,
   `prefers-reduced-motion` dihormati, target sentuh min 44px, tanpa
   scroll horizontal di 390px.
 - **Kejujuran data:** semua angka terverifikasi terhadap lampiran oleh
-  `scripts/check-data.mjs` (surel 35, host 893, kategori 594/256/25/8/6/4).
+  `scripts/check-data.mjs` (surel 35, host 893, kategori 594/256/25/8/6/4;
+  payment 24 jenis, total 3.629).
   Selisih IP (header klaim 19, terhitung 17) dicatat sebagai peringatan,
   bukan disembunyikan.
+- **Tanpa branding tim:** repo tampil sebagai kerja pentester independen
+  — merek tim/perusahaan dilarang tampil di file mana pun (dicek
+  otomatis `check-static.mjs`).
 - **Portabilitas:** HTML+CSS+JS vanilla; jalan di server statis mana pun.
 
 ## 8. Arsitektur & Tech Stack
@@ -120,6 +139,7 @@ repo = folder deploy). Detail: `docs/deploy.md`.
 | Situs arsip + penjelajah | ✅ PR #1 |
 | CI + docs lengkap | ✅ PR #1 |
 | Deploy Pages `report-fraud` | ✅ PR #1 |
+| Temuan F-006 (redaksi) + template temuan | ✅ PR #2 (19 Nov 2026) |
 | Pemindaian ulang / tindak lanjut USK | ⏳ Di luar repo ini |
 
 ## 10. Risiko & Mitigasi
@@ -128,6 +148,8 @@ repo = folder deploy). Detail: `docs/deploy.md`.
 |---|---|
 | Angka di situs tidak cocok dengan lampiran | `check-data.mjs` di CI mengikat surel 35, host 893, kategori per aturan |
 | Alamat surel pribadi tersebar lewat UI | Tidak dirender (agregat saja) + dicek otomatis di `check-static.mjs` |
+| Data pribadi di temuan baru tersebar | Redaksi wajib (NIP/hash/NIK/PIN/nama/host internal) + gate otomatis di `check-static.mjs` + template checklist |
+| Merek tim/perusahaan menempel di repo | Dilarang tampil di file mana pun + gate otomatis di `check-static.mjs` |
 | Temuan April 2026 dibaca sebagai kondisi saat ini | Penanda di rel + metodologi: "mencerminkan 29 April 2026" |
 | URL bukti diklik sebagai tautan hidup | Ditampilkan sebagai teks + tombol salin, bukan `<a>` |
 | Selisih IP header vs isi (19 vs 17) | Dicatat sebagai peringatan + di docs/API.md, bukan dikoreksi diam-diam |
@@ -135,11 +157,12 @@ repo = folder deploy). Detail: `docs/deploy.md`.
 
 ## 11. Kriteria Keberhasilan
 
-- Situs live 200 di `report-fraud.pages.dev`, semua fitur F1–F10
+- Situs live 200 di `report-fraud.pages.dev`, semua fitur F1–F12
   berfungsi di play-test (desktop + mobile).
 - CI hijau (4 job) + gate 7 sumbu ≥4/5 tiap sumbu + checklist link
   preview lolos.
-- `check-data.mjs` hijau: surel 35, host 893, kategori sesuai aturan.
+- `check-data.mjs` hijau: surel 35, host 893, kategori sesuai aturan;
+  payment 24 jenis, total 3.629.
 - Tidak ada secret ke-commit; LICENSE MIT; README + video demo ada.
 
 ## 12. Lampiran

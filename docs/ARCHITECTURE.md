@@ -26,13 +26,16 @@ Pengunjung ──▶ Cloudflare Pages (report-fraud.pages.dev)
 
 | Path | Isi |
 |---|---|
-| `index.html` | Satu halaman: masthead, hero/ringkasan, temuan A/B/C, penjelajah, mitigasi, metodologi, berkas, footer. Tag OG/Twitter di `<head>`. |
+| `index.html` | Satu halaman: masthead, hero/ringkasan, temuan A/B/C/D, penjelajah, mitigasi, metodologi, berkas, footer. Tag OG/Twitter di `<head>`. |
 | `styles.css` | Seluruh gaya. Token warna di `:root`. Radius 0, tanpa bayangan, tanpa gradient. |
 | `app.js` | Penjelajah (fetch + parse + cari/filter/paginasi) + tombol salin URL bukti. Vanilla JS, tanpa framework. |
 | `favicon.svg` | Marka "RF" + garis segel merah. |
-| `og-image.png` | Screenshot hero 1200x630 (dibuat `scripts/screenshot.mjs`). |
+| `og-image.png` | Kartu preview 1200x630 (digambar PIL mengikuti palet situs — bukan screenshot, karena Chrome VM tidak bisa start). |
 | `Security_Disclosure_USK_2026.pdf` | Laporan asli (byte-identik dari `unsyiah/`, blob SHA `0b8df26a…`). |
 | `full_hosts_scan_usk.txt` | Data mentah (byte-identik dari `unsyiah/`, blob SHA `5fde7c23…`). |
+| `findings/F-006-h2h-sqldump.md` | Temuan D (F-006, KRITIS, 28 Sep 2026) — versi redaksi. |
+| `evidence/h2h-payments-counts.txt` | Hitungan agregat ekspor laporan pembayaran (24 jenis, total 3.629). Dirender statis di tabel temuan D; berkasnya bisa diunduh. |
+| `docs/templates/finding-template.md` | Template temuan kosong + checklist redaksi. |
 | `package.json` | Hanya devDependencies: Playwright, puppeteer-core, html-validate. `engines.node >= 22`. |
 | `scripts/` | `check-static.mjs` (gate P0 + restructure + OG + privasi), `check-data.mjs` (integritas data), `advisory-sweep.py` (OSV batch), `smoke.mjs`, `screenshot.mjs`, `make-video.mjs`. |
 | `e2e/` | Playwright spec (desktop + mobile). |
@@ -77,6 +80,14 @@ Pengunjung ──▶ Cloudflare Pages (report-fraud.pages.dev)
 | `unsyiah/Security_Disclosure_USK_2026.pdf` | `Security_Disclosure_USK_2026.pdf` | Pindah byte-identik (blob SHA `0b8df26a…` dipakai ulang) |
 | `unsyiah/full_hosts_scan_usk.txt` | `full_hosts_scan_usk.txt` | Pindah byte-identik (blob SHA `5fde7c23…` dipakai ulang; diverifikasi `sha1("blob 21169\0"+isi)`) |
 | `unsyiah/` | — (dihapus) | Entri `sha:null` di tree push, difilter terhadap base tree |
+
+## Penambahan (PR #2)
+
+| Asal | Tujuan | Cara |
+|---|---|---|
+| Zip `Universitas_Syiah_Kuala.zip` → `usk-payment/` | `findings/F-006-h2h-sqldump.md` (versi redaksi) + `evidence/h2h-payments-counts.txt` (agregat) | Ditulis ulang sebagai temuan redaksi — tanpa NIP/nama/hash/NIK/PIN/host internal; dump mentah tidak ikut |
+| — | `docs/templates/finding-template.md` | Template kosong mengikuti struktur F-006 + checklist redaksi |
+| `usk-disclosure/` di zip yang sama | — (tidak ditambah) | Isinya byte-identik dengan PDF + TXT yang sudah live sejak PR #1 |
 
 Tidak ada konflik path di root: tidak ada file root yang bernama sama
 dengan isi subfolder. README/PRD/LICENSE/.gitignore/CHANGELOG/
