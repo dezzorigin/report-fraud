@@ -42,6 +42,12 @@ Catatan dari program P1 (jangan ulangi kesalahan lama):
    - `curl -I https://report-fraud.pages.dev/og-image.png` → 200 +
      `content-type: image/*`.
    - Gambar 1200x630 (cek dimensi).
+   - **Perangkap (terbukti 19 Nov 2026):** Pages mengembalikan
+     `index.html` dengan status **200 + `text/html`** untuk path aset
+     yang TIDAK ADA (bahkan `/does-not-exist-xyz.png` → 200) — jadi
+     status 200 saja BUKAN bukti og-image ada; wajib cek
+     `content-type: image/*` (+ dimensi). Hal yang sama berlaku untuk
+     semua aset: cek content-type, bukan cuma status.
 3. `curl -I .../Security_Disclosure_USK_2026.pdf` → 200 +
    `application/pdf`.
 4. `curl -s .../full_hosts_scan_usk.txt` → 200 + memuat `PART 3`.
