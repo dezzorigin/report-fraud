@@ -1,85 +1,22 @@
-# PRD — Report Fraud
+# PRD — Report Fraud (ringkas)
 
-## 1. Informasi Proyek
+PRD lengkap: [`docs/PRD.md`](docs/PRD.md).
+
+## Ringkas
 
 | Field | Nilai |
 |---|---|
-| Nama Proyek | Report Fraud |
-| Tech Stack | Static Web |
-| Status | Dalam pengembangan |
-| Penanggung Jawab | Nabil Aulia Dika |
-| Versi Dokumen | 1.0 |
-| Tanggal | 2026 |
+| Produk | Situs arsip laporan disclosure keamanan USK (situs statis) |
+| Laporan yang diarsipkan | Security_Disclosure_USK_2026.pdf, 29 April 2026 |
+| Live | https://report-fraud.pages.dev/ |
+| Status | Proper (P1 #39) |
 
-## 2. Latar Belakang
+Situs ini menyajikan laporan responsible disclosure Nabil Aulia Dika
+untuk UPT TIK Universitas Syiah Kuala: ringkasan eksekutif, 3 temuan
+(1 TINGGI, 2 SEDANG), 3 rekomendasi mitigasi, penjelajah 893 subdomain
+yang bisa dicari/difilter, dan unduh berkas asli (PDF + data mentah).
 
-Proyek ini dikembangkan sebagai bagian dari portofolio dan kebutuhan operasional. Dokumen ini mengikuti standar PRD nasional agar ruang lingkup, fitur, dan kriteria keberhasilan terdefinisi dengan jelas.
-
-## 3. Masalah yang Diselesaikan
-
-Pengguna membutuhkan solusi digital yang efisien, terukur, dan mudah dipelihara untuk kebutuhan yang ditangani oleh proyek ini.
-
-## 4. Tujuan & Sasaran
-
-- Menyediakan fungsionalitas inti secara andal.
-- Menjaga kualitas kode dan dokumentasi.
-- Memudahkan onboarding kontributor baru.
-
-## 5. Ruang Lingkup
-
-### In Scope
-- Fitur inti aplikasi sesuai struktur repo.
-- Setup & konfigurasi pengembangan lokal.
-- Dokumentasi (README + PRD).
-
-### Out of Scope
-- Infrastruktur production (kecuali disebutkan).
-- Integrasi pihak ketiga yang belum dikonfigurasi.
-
-## 6. Fitur & Persyaratan Fungsional
-
-Struktur proyek (file/direktori utama):
-- unsyiah/
-- LICENSE
-- PRD.md
-- README.md
-
-## 7. Persyaratan Non-Fungsional
-
-- **Performa:** responsif untuk penggunaan normal.
-- **Keamanan:** rahasia (`.env`) tidak boleh ter-commit; gunakan `.env.example`.
-- **Maintainability:** kode terstruktur, terdokumentasi.
-- **Portabilitas:** dapat dijalankan di Linux/macOS/Windows (sesuai stack).
-
-## 8. Arsitektur & Tech Stack
-
-Static Web
-
-## 9. Milestone / Roadmap
-
-| Fase | Status |
-|---|---|
-| Inisialisasi & scaffolding | ✅ |
-| Pengembangan fitur inti | 🔄 |
-| Testing & QA | ⏳ |
-| Deployment | ⏳ |
-| Dokumentasi | ✅ (README + PRD) |
-
-## 10. Risiko & Mitigasi
-
-| Risiko | Mitigasi |
-|---|---|
-| Konfigurasi env bocor | `.gitignore` + `.env.example` |
-| Dependency usang | Audit berkala (`npm audit` / `pip list --outdated`) |
-| Build artifact besar | Tambahkan ke `.gitignore` |
-
-## 11. Kriteria Keberhasilan
-
-- Aplikasi berjalan tanpa error di lingkungan dev.
-- README & PRD lengkap dan up-to-date.
-- Tidak ada secret yang ter-commit.
-
-## 12. Lampiran
-
-- Struktur: lihat README.md
-- Lisensi: MIT (LICENSE)
+Bukan alat pemindai, bukan penilaian kondisi USK saat ini — arsip
+laporan 29 April 2026 apa adanya. Alamat surel individual tidak
+ditampilkan di UI (hanya agregat); daftar lengkap ada di lampiran
+mentah untuk UPT TIK USK.

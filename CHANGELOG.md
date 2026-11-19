@@ -2,39 +2,31 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangerot.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-## [Unreleased]
+## [1.0.0] — 2026-11-19
 
 ### Added
-- Initial Next.js project setup for Report Fraud
-- Report page components
-- Submission form
-- Integration with Supabase for data persistence
-- Responsive design for mobile/desktop
+- Situs arsip laporan disclosure keamanan USK (29 April 2026) sebagai
+  situs statis: ringkasan eksekutif, 3 temuan + bukti, penjelajah 893
+  subdomain (cari + 7 filter kategori + paginasi), 3 rekomendasi
+  mitigasi, metodologi, berkas & data mentah.
+- Link preview (9 tag OG/Twitter) + `og-image.png` 1200x630 dari
+  screenshot asli.
+- CI (4 job): html-validate + gate P0 + integritas data, OSV
+  advisory-sweep, Playwright e2e (desktop + mobile), smoke folder repo.
+- Docs lengkap: PRD, DESIGN (referensi Framler Security), ARCHITECTURE,
+  API, diagrams.html, deploy, testing + screenshot & video demo.
+- Deploy live Cloudflare Pages: https://report-fraud.pages.dev/
 
 ### Changed
-- Updated Next.js and dependencies to latest stable versions
-- Improved UI/UX for report interface
-- Enhanced responsive design for mobile devices
-- Optimized image loading for report assets
+- Restructure: `unsyiah/Security_Disclosure_USK_2026.pdf` dan
+  `unsyiah/full_hosts_scan_usk.txt` dipindah byte-identik ke root repo;
+  subfolder `unsyiah/` dihapus.
+- README/PRD template generik diganti dokumen asli (produk ini arsip
+  laporan disclosure, bukan "Static Web").
+- `.gitignore` diperkuat (node_modules, dist, .env, artefak Playwright).
 
 ### Fixed
-- Fixed form submission bugs
-- Fixed report generation errors
-- Fixed modal dialog closing issues
-
-### Security
-- Updated dependency versions to patch vulnerabilities
-- Fixed potential XSS vulnerabilities in input fields
-- Fixed Supabase RLS policy vulnerabilities
-
-## [1.0.0] - 2024-11-05
-
-### Added
-- Initial Report Fraud project setup
-- Report submission system
-- Fraud reporting functionality
-- Supabase database integration
-- Responsive design
+- Tidak ada lagi klaim `npm install` / `npm run dev` untuk repo yang
+  semula tanpa satu baris kode.
+- Selisih data sumber didokumentasikan: header lampiran mengklaim 19
+  alamat IP, Bagian 2 hanya memuat 17 baris (lihat `docs/API.md`).

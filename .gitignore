@@ -1,9 +1,20 @@
+# Dependensi & build
+node_modules/
+dist/
+playwright-report/
+test-results/
+*.tsbuildinfo
+
+# Artefak lokal
+.DS_Store
+*.log
+
+# Env & rahasia — JANGAN PERNAH commit
 .env
 .env.*
-node_modules/
-.next/
-__pycache__/
-.venv/
-dist/
-build/
-.DS_Store
+!.env.example
+
+# OS / editor
+Thumbs.db
+.vscode/
+.idea/

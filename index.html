@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Report Fraud — Laporan Keamanan USK 2026</title>
+<meta name="description" content="Arsip laporan disclosure keamanan Universitas Syiah Kuala, 29 April 2026: jejak defacement judi online, 35 surel terekspos, dan 893 subdomain yang dipetakan secara pasif.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="canonical" href="https://report-fraud.pages.dev/">
+<meta property="og:title" content="Report Fraud — Laporan Keamanan USK 2026">
+<meta property="og:description" content="Arsip laporan disclosure keamanan Universitas Syiah Kuala, 29 April 2026: jejak defacement judi online, 35 surel terekspos, dan 893 subdomain yang dipetakan secara pasif.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://report-fraud.pages.dev/">
+<meta property="og:image" content="https://report-fraud.pages.dev/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Report Fraud — Laporan Keamanan USK 2026">
+<meta name="twitter:description" content="Arsip laporan disclosure keamanan Universitas Syiah Kuala, 29 April 2026: jejak defacement judi online, 35 surel terekspos, dan 893 subdomain yang dipetakan secara pasif.">
+<meta name="twitter:image" content="https://report-fraud.pages.dev/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600;6..72,700&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#isi">Lewati ke isi laporan</a>
+
+<header class="masthead">
+  <div class="wrap masthead-in">
+    <a class="wordmark" href="#atas" aria-label="Report Fraud — kembali ke atas">
+      <span class="wordmark-rf">RF</span>
+      <span class="wordmark-text">Report&thinsp;—&thinsp;Fraud</span>
+      <span class="wordmark-sub">Arsip disclosure · usk.ac.id</span>
+    </a>
+    <nav class="mastnav" aria-label="Navigasi utama">
+      <a href="#ringkasan">Ringkasan</a>
+      <a href="#temuan">Temuan</a>
+      <a href="#penjelajah">Penjelajah</a>
+      <a href="#mitigasi">Mitigasi</a>
+      <a href="#berkas">Berkas</a>
+    </nav>
+    <a class="gh-link" href="https://github.com/dezzorigin/report-fraud" target="_blank" rel="noopener" aria-label="Repositori GitHub report-fraud (terbuka di tab baru)">
+      <svg viewBox="0 0 16 16" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+      <span>GitHub</span>
+    </a>
+  </div>
+</header>
+
+<main id="atas">
+<div class="wrap shell">
+  <aside class="rail" aria-label="Daftar isi laporan">
+    <p class="rail-file">Berkas<br><strong>RF-USK-2026-0429</strong></p>
+    <ol class="rail-toc">
+      <li><a href="#ringkasan"><span>Ringkasan eksekutif</span></a></li>
+      <li><a href="#temuan"><span>Temuan A — Defacement</span></a></li>
+      <li><a href="#temuan-b"><span>Temuan B — Surel terekspos</span></a></li>
+      <li><a href="#temuan-c"><span>Temuan C — Attack surface</span></a></li>
+      <li><a href="#penjelajah"><span>Penjelajah subdomain</span></a></li>
+      <li><a href="#mitigasi"><span>Rekomendasi mitigasi</span></a></li>
+      <li><a href="#metodologi"><span>Metodologi &amp; ruang lingkup</span></a></li>
+      <li><a href="#berkas"><span>Berkas &amp; data mentah</span></a></li>
+    </ol>
+    <p class="rail-note">Temuan mencerminkan kondisi <strong>29 April 2026</strong> — bukan status saat ini.</p>
+  </aside>
+
+  <div class="doc" id="isi">
+    <!-- ═══ HERO / RINGKASAN ═══ -->
+    <section class="hero" id="ringkasan" aria-labelledby="judul">
+      <p class="kicker"><span class="kicker-dot" aria-hidden="true"></span>Laporan keamanan · Universitas Syiah Kuala</p>
+      <h1 id="judul">Jejak defacement, surel terekspos, dan 893 pintu masuk.</h1>
+      <p class="lede">Laporan ini memuat temuan kerentanan keamanan siber yang terdeteksi melalui teknik Open Source Intelligence (OSINT) menggunakan perangkat lunak sumber terbuka pada infrastruktur digital Universitas Syiah Kuala (usk.ac.id). Temuan utama mencakup jejak riwayat Web Defacement (injeksi konten perjudian) yang tercatat pada indeks mesin pencari, serta eksposur publik yang masif pada lingkungan pengembangan (development) dan alamat surel internal.</p>
+
+      <dl class="meta">
+        <div><dt>Pelapor</dt><dd>Nabil Aulia Dika</dd></div>
+        <div><dt>NPM</dt><dd>250810701100090</dd></div>
+        <div><dt>Program studi</dt><dd>Informatika</dd></div>
+        <div><dt>Tanggal laporan</dt><dd>29 April 2026</dd></div>
+        <div><dt>Metode</dt><dd>OSINT pasif, sumber publik</dd></div>
+        <div><dt>Target</dt><dd>usk.ac.id</dd></div>
+      </dl>
+
+      <ul class="stats" aria-label="Angka utama laporan">
+        <li><strong>1</strong><span>temuan TINGGI</span></li>
+        <li><strong>2</strong><span>temuan SEDANG</span></li>
+        <li><strong>35</strong><span>surel terekspos</span></li>
+        <li><strong>893</strong><span>subdomain / host</span></li>
+      </ul>
+      <p class="src-note">Semua angka di halaman ini dikutip dari laporan &amp; lampirannya (lihat <a href="#berkas">Berkas</a>).</p>
+
+      <div class="cover" role="group" aria-label="Sampul laporan asli">
+        <p class="cover-eyebrow">Berkas asli · 2 halaman · A4</p>
+        <p class="cover-title">Security Vulnerability Report</p>
+        <p class="cover-sub">Universitas Syiah Kuala (usk.ac.id)</p>
+        <svg class="seal" viewBox="0 0 120 120" width="104" height="104" role="img" aria-label="Segel: Disclosure USK 2026">
+          <defs><path id="seal-circle" d="M60,60 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0"/></defs>
+          <circle cx="60" cy="60" r="58" fill="none" stroke="#9E1B1B" stroke-width="2"/>
+          <circle cx="60" cy="60" r="34" fill="none" stroke="#9E1B1B" stroke-width="1.5"/>
+          <text fill="#9E1B1B" font-size="12.5" font-weight="700" letter-spacing="2.5"><textPath href="#seal-circle">DISCLOSURE • USK • 2026 •</textPath></text>
+          <text x="60" y="67" text-anchor="middle" fill="#9E1B1B" font-size="22" font-weight="700">RF</text>
+        </svg>
+        <p class="cover-meta">PDF · 94.459 byte · dibuat dari Google Docs</p>
+        <div class="cover-actions">
+          <a class="btn btn-primary" href="Security_Disclosure_USK_2026.pdf" download>Unduh PDF laporan</a>
+          <a class="btn" href="#berkas">Lihat data mentah</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ TEMUAN ═══ -->
+    <section class="section" id="temuan" aria-labelledby="temuan-judul">
+      <p class="eyebrow">RF-USK-2026-0429 · Laporan Keamanan USK · 29 April 2026</p>
+      <h2 id="temuan-judul">Temuan</h2>
+      <p class="section-intro">Tiga temuan dari pemindaian pasif 29 April 2026. Bukti di bawah ini dikutip apa adanya dari laporan — termasuk URL yang saat ini kemungkinan sudah 404.</p>
+
+      <article class="finding finding-high" aria-labelledby="temuan-a-judul">
+        <header class="finding-head">
+          <span class="finding-letter" aria-hidden="true">A</span>
+          <div>
+            <h3 id="temuan-a-judul">Riwayat Web Defacement &amp; SEO Poisoning</h3>
+            <p class="finding-cat">Jejak injeksi konten perjudian pada subdomain USK</p>
+          </div>
+          <span class="sev sev-high">Tingkat keparahan: TINGGI</span>
+        </header>
+        <p>Ditemukan jejak injeksi URL ilegal (perjudian/togel) pada beberapa subdomain. Meskipun status HTTP saat ini mungkin menunjukkan 404 (Not Found), jejak ini menandakan bahwa penyerang pernah berhasil mengeksploitasi celah (seperti unrestricted file upload atau kerentanan CMS) untuk menanamkan direktori asing.</p>
+        <h4>URL terdampak &amp; indikasi ancaman</h4>
+        <ul class="evidence">
+          <li>
+            <code>https://fkep.usk.ac.id/BABEJUDI/</code>
+            <span>Riwayat injeksi judi online</span>
+            <button class="copy" type="button" data-copy="https://fkep.usk.ac.id/BABEJUDI/">Salin URL</button>
+          </li>
+          <li>
+            <code>https://siakadup3ai.usk.ac.id/BABEJUDI/</code>
+            <span>Riwayat injeksi judi online</span>
+            <button class="copy" type="button" data-copy="https://siakadup3ai.usk.ac.id/BABEJUDI/">Salin URL</button>
+          </li>
+          <li>
+            <code>https://sibela.usk.ac.id/market/?kemajuan=Safnah</code>
+            <span>Backlink togel / spam SEO</span>
+            <button class="copy" type="button" data-copy="https://sibela.usk.ac.id/market/?kemajuan=Safnah">Salin URL</button>
+          </li>
+          <li>
+            <code>https://sippan.usk.ac.id/kejora/?perkara=KOI-TOTO-TOGEL-LOGIN</code>
+            <span>Backlink togel / spam SEO</span>
+            <button class="copy" type="button" data-copy="https://sippan.usk.ac.id/kejora/?perkara=KOI-TOTO-TOGEL-LOGIN">Salin URL</button>
+          </li>
+        </ul>
+        <p class="finding-note">URL di atas ditampilkan sebagai teks bukti, bukan tautan aktif — sebagian sudah tidak lagi merespons saat laporan ditulis.</p>
+      </article>
+
+      <article class="finding finding-med" id="temuan-b" aria-labelledby="temuan-b-judul">
+        <header class="finding-head">
+          <span class="finding-letter" aria-hidden="true">B</span>
+          <div>
+            <h3 id="temuan-b-judul">Eksposur Data Publik</h3>
+            <p class="finding-cat">35 alamat surel institusi fungsional terekspos secara publik</p>
+          </div>
+          <span class="sev sev-med">Tingkat keparahan: SEDANG</span>
+        </header>
+        <p>Pemindaian OSINT mendeteksi 35 alamat surel institusi fungsional yang terekspos secara publik. Data ini rawan dimanfaatkan sebagai vektor serangan Social Engineering maupun Spear Phishing yang ditargetkan pada staf atau dosen USK.</p>
+        <div class="redact" role="group" aria-label="Alamat surel disensor: 35 alamat">
+          <span class="redact-bar" aria-hidden="true"></span>
+          <span class="redact-bar redact-bar-s" aria-hidden="true"></span>
+          <span class="redact-bar" aria-hidden="true"></span>
+          <span class="redact-at" aria-hidden="true">@usk.ac.id</span>
+          <span class="redact-count">× 35 alamat</span>
+        </div>
+        <p class="finding-note">Alamat individual <strong>tidak ditampilkan</strong> di halaman ini — hanya agregatnya: 30 alamat di @usk.ac.id langsung dan 5 alamat di subdomain (feb, fkip, fmipa, mhs). Daftar lengkap 35 alamat ada di lampiran mentah untuk tim UPT TIK USK (<a href="full_hosts_scan_usk.txt" download>full_hosts_scan_usk.txt</a>, Bagian 1).</p>
+      </article>
+
+      <article class="finding finding-med" id="temuan-c" aria-labelledby="temuan-c-judul">
+        <header class="finding-head">
+          <span class="finding-letter" aria-hidden="true">C</span>
+          <div>
+            <h3 id="temuan-c-judul">Pemetaan Subdomain / Attack Surface</h3>
+            <p class="finding-cat">893 subdomain/host aktif memetakan infrastruktur jaringan secara terbuka</p>
+          </div>
+          <span class="sev sev-med">Tingkat keparahan: SEDANG</span>
+        </header>
+        <p>Pemindaian pasif menemukan total 893 subdomain/host aktif. Beberapa di antaranya memerlukan perhatian khusus karena menunjukkan indikasi lingkungan pengujian (development environment) yang dapat diakses publik tanpa autentikasi dasar.</p>
+        <h4>Aset berisiko tinggi</h4>
+        <ul class="asset-list">
+          <li><code>dev.fk.usk.ac.id</code><span>lingkungan development Fakultas Kedokteran</span></li>
+          <li><code>perwaliandev.usk.ac.id</code><span>lingkungan development sistem perwalian</span></li>
+        </ul>
+        <p class="finding-note">Pemetaan lengkap 893 host dan alamat IP terkait dilampirkan secara utuh pada dokumen pendukung. <a href="#penjelajah">Jelajahi daftarnya di bawah</a>.</p>
+      </article>
+    </section>
+
+    <!-- ═══ PENJELAJAH ═══ -->
+    <section class="section" id="penjelajah" aria-labelledby="penjelajah-judul">
+      <p class="eyebrow">RF-USK-2026-0429 · Laporan Keamanan USK · 29 April 2026</p>
+      <h2 id="penjelajah-judul">Penjelajah subdomain</h2>
+      <p class="section-intro">Seluruh 893 host dari lampiran laporan, bisa dicari dan difilter. Data dimuat langsung dari <code>full_hosts_scan_usk.txt</code> — tidak ada data lain yang ditambahkan.</p>
+
+      <div class="explorer" id="explorer">
+        <div class="explorer-controls">
+          <label class="search-label" for="cari">Cari subdomain</label>
+          <input id="cari" type="search" placeholder="mis. dev, webmail, simkuliah…" autocomplete="off" disabled>
+          <div class="chips" role="group" aria-label="Filter kategori">
+            <button type="button" class="chip is-active" data-filter="semua" aria-pressed="true" disabled>Semua</button>
+            <button type="button" class="chip" data-filter="dev" aria-pressed="false" disabled>Dev &amp; staging</button>
+            <button type="button" class="chip" data-filter="webmail" aria-pressed="false" disabled>Webmail</button>
+            <button type="button" class="chip" data-filter="mail" aria-pressed="false" disabled>Mail</button>
+            <button type="button" class="chip" data-filter="fakultas" aria-pressed="false" disabled>Fakultas</button>
+            <button type="button" class="chip" data-filter="layanan" aria-pressed="false" disabled>Layanan</button>
+            <button type="button" class="chip" data-filter="lainnya" aria-pressed="false" disabled>Lainnya</button>
+          </div>
+        </div>
+        <p class="explorer-meta" id="explorer-meta" aria-live="polite">Memuat data lampiran…</p>
+        <ul class="host-list" id="host-list"></ul>
+        <div class="pager" id="pager" hidden>
+          <button type="button" id="pager-prev">Sebelumnya</button>
+          <span id="pager-info" aria-live="polite"></span>
+          <button type="button" id="pager-next">Berikutnya</button>
+        </div>
+        <p class="explorer-error" id="explorer-error" hidden>Data lampiran gagal dimuat. Unduh langsung: <a href="full_hosts_scan_usk.txt" download>full_hosts_scan_usk.txt</a>.</p>
+        <p class="explorer-note">Klasifikasi di atas adalah pengelompokan otomatis berdasarkan nama host — bukan label dari laporan. Aturannya: label <code>dev</code> (di awal/akhir) → Dev &amp; staging; awalan <code>webmail.</code> → Webmail; awalan <code>mail.</code> → Mail; mengandung kode fakultas (fk, fkip, feb, fh, ft, fmipa, fkp, fkh, fkg, fisip, fp, tp, sps) → Fakultas; entri wildcard (<code>*</code>) → Lainnya; sisanya → Layanan. Akhiran <code>:IP</code> adalah pasangan host→IP dari lampiran; akhiran <code>:nama-host</code> adalah rujukan silang; akhiran <code>:aspmx…</code> adalah catatan MX Google. Rincian aturan: <a href="docs/API.md">docs/API.md</a>.</p>
+      </div>
+    </section>
+
+    <!-- ═══ MITIGASI ═══ -->
+    <section class="section" id="mitigasi" aria-labelledby="mitigasi-judul">
+      <p class="eyebrow">RF-USK-2026-0429 · Laporan Keamanan USK · 29 April 2026</p>
+      <h2 id="mitigasi-judul">Rekomendasi mitigasi</h2>
+      <p class="section-intro">Tiga langkah preventif yang disarankan laporan, berdasarkan security best practices. Status tindak lanjut di USK tidak diketahui dari laporan ini — situs ini tidak mengklaim satu pun sudah diperbaiki.</p>
+      <ol class="mitigations">
+        <li>
+          <span class="mit-num" aria-hidden="true">1</span>
+          <div>
+            <h3>Pemeriksaan integritas sistem (file auditing)</h3>
+            <p>Melakukan pemeriksaan menyeluruh pada direktori web fakultas yang tercatat memiliki riwayat defacement, guna memastikan tidak ada anomali atau skrip berbahaya (seperti backdoor/web shell) yang masih bersarang di dalam server.</p>
+            <p class="mit-status"><span class="status-chip">Diajukan dalam laporan</span></p>
+          </div>
+        </li>
+        <li>
+          <span class="mit-num" aria-hidden="true">2</span>
+          <div>
+            <h3>Pembatasan lingkungan pengembangan</h3>
+            <p>Menerapkan pembatasan akses secara ketat (misalnya melalui implementasi IP Whitelisting atau VPN Campus) pada seluruh subdomain yang diperuntukkan bagi fase development dan testing.</p>
+            <p class="mit-status"><span class="status-chip">Diajukan dalam laporan</span></p>
+          </div>
+        </li>
+        <li>
+          <span class="mit-num" aria-hidden="true">3</span>
+          <div>
+            <h3>Audit pemetaan DNS (DNS hygiene)</h3>
+            <p>Meninjau kembali daftar DNS records dari hasil pemindaian terlampir dan mempertimbangkan untuk menonaktifkan (deprovisioning) subdomain maupun layanan yang sudah tidak beroperasi guna memitigasi risiko Subdomain Takeover.</p>
+            <p class="mit-status"><span class="status-chip">Diajukan dalam laporan</span></p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ═══ METODOLOGI ═══ -->
+    <section class="section" id="metodologi" aria-labelledby="metodologi-judul">
+      <p class="eyebrow">RF-USK-2026-0429 · Laporan Keamanan USK · 29 April 2026</p>
+      <h2 id="metodologi-judul">Metodologi &amp; ruang lingkup</h2>
+      <dl class="method">
+        <div><dt>Metode</dt><dd>Open Source Intelligence (OSINT) — pemindaian pasif dari sumber publik, memakai perangkat lunak sumber terbuka.</dd></div>
+        <div><dt>Tanggal pemindaian</dt><dd>29 April 2026</dd></div>
+        <div><dt>Target</dt><dd>usk.ac.id (Universitas Syiah Kuala)</dd></div>
+        <div><dt>Sifat data</dt><dd>Data mentah dilampirkan murni sebagai referensi tim UPT TIK USK dalam melakukan peninjauan keamanan infrastruktur jaringan.</dd></div>
+        <div><dt>Batas laporan</dt><dd>Temuan mencerminkan kondisi 29 April 2026. Situs ini mengarsipkan laporan apa adanya — bukan alat pemindai, bukan penilaian kondisi USK saat ini, dan tidak menambahkan temuan baru.</dd></div>
+        <div><dt>Catatan data</dt><dd>Header lampiran mengklaim 19 alamat IP server, tetapi Bagian 2 lampiran hanya memuat 17 baris alamat. Selisih ini dicatat apa adanya di <a href="docs/API.md">docs/API.md</a> dan dicek otomatis oleh <code>scripts/check-data.mjs</code> — bukan dikoreksi diam-diam.</dd></div>
+      </dl>
+    </section>
+
+    <!-- ═══ BERKAS ═══ -->
+    <section class="section" id="berkas" aria-labelledby="berkas-judul">
+      <p class="eyebrow">RF-USK-2026-0429 · Laporan Keamanan USK · 29 April 2026</p>
+      <h2 id="berkas-judul">Berkas &amp; data mentah</h2>
+      <p class="section-intro">Dua berkas asli dari repositori — dipindahkan dari subfolder <code>unsyiah/</code> ke root repo saat restructure (lihat PR), isinya tidak diubah.</p>
+      <div class="files">
+        <article class="file-card">
+          <h3>Security_Disclosure_USK_2026.pdf</h3>
+          <p>Laporan utama: ringkasan eksekutif, tiga temuan, tiga rekomendasi.</p>
+          <dl class="file-meta">
+            <div><dt>Ukuran</dt><dd>94.459 byte</dd></div>
+            <div><dt>Halaman</dt><dd>2 · A4</dd></div>
+            <div><dt>Dibuat</dt><dd>Google Docs (Skia/PDF)</dd></div>
+          </dl>
+          <a class="btn btn-primary" href="Security_Disclosure_USK_2026.pdf" download>Unduh PDF</a>
+        </article>
+        <article class="file-card">
+          <h3>full_hosts_scan_usk.txt</h3>
+          <p>Data mentah: 35 surel, 17 alamat IP terhitung, 893 subdomain/host.</p>
+          <dl class="file-meta">
+            <div><dt>Ukuran</dt><dd>21.169 byte</dd></div>
+            <div><dt>Baris</dt><dd>979</dd></div>
+            <div><dt>Bagian</dt><dd>3 (surel · IP · host)</dd></div>
+          </dl>
+          <a class="btn btn-primary" href="full_hosts_scan_usk.txt" download>Unduh data mentah</a>
+        </article>
+        <article class="file-card">
+          <h3>Repositori GitHub</h3>
+          <p>Kode situs ini, dokumen lengkap (PRD → arsitektur → deployment), dan riwayat perubahannya.</p>
+          <dl class="file-meta">
+            <div><dt>Repo</dt><dd>dezzorigin/report-fraud</dd></div>
+            <div><dt>Lisensi</dt><dd>MIT</dd></div>
+            <div><dt>Cabang</dt><dd>main</dd></div>
+          </dl>
+          <a class="btn" href="https://github.com/dezzorigin/report-fraud" target="_blank" rel="noopener">Buka di GitHub</a>
+        </article>
+      </div>
+    </section>
+  </div>
+</div>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <p class="footer-title">Report Fraud — arsip publik laporan disclosure keamanan USK, 29 April 2026.</p>
+    <p>Disusun oleh Nabil Aulia Dika (Informatika USK, NPM 250810701100090) sebagai laporan responsible disclosure untuk UPT TIK Universitas Syiah Kuala. Situs ini hanya mengarsipkan laporan apa adanya; bukan alat pemindai dan bukan penilaian kondisi USK saat ini.</p>
+    <p class="footer-links">
+      <a href="https://github.com/dezzorigin/report-fraud" target="_blank" rel="noopener">GitHub</a>
+      <a href="Security_Disclosure_USK_2026.pdf" download>Laporan (PDF)</a>
+      <a href="full_hosts_scan_usk.txt" download>Data mentah (TXT)</a>
+      <a href="docs/PRD.md">PRD</a>
+    </p>
+    <p class="footer-small">Berkas RF-USK-2026-0429 · Lisensi MIT · Dibangun sebagai situs statis tanpa dependensi produksi.</p>
+  </div>
+</footer>
+
+<script src="app.js" defer></script>
+</body>
+</html>
