@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diagram — Report Fraud</title>
+<style>
+  :root { --paper:#FAFAF7; --ink:#14232E; --seal:#9E1B1B; --ochre:#B98A1F; --ash:#5B6B74; --hair:#D8DCDD; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--paper); color:var(--ink); font-family:Georgia,'Times New Roman',serif; }
+  .wrap { max-width:960px; margin:0 auto; padding:32px 24px 64px; }
+  h1 { font-size:34px; margin:0 0 8px; }
+  p.lede { font-family:Arial,sans-serif; font-size:16px; line-height:1.6; max-width:70ch; }
+  h2 { font-size:24px; margin:48px 0 8px; }
+  p.cap { font-family:Arial,sans-serif; font-size:14px; color:var(--ash); margin:8px 0 0; max-width:70ch; line-height:1.6; }
+  figure { margin:24px 0 0; border:1px solid var(--ink); background:#fff; padding:24px; }
+  svg { display:block; max-width:100%; height:auto; }
+  .b { font-family:Arial,sans-serif; font-weight:700; }
+  .s { font-family:Arial,sans-serif; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Diagram — Report Fraud</h1>
+  <p class="lede">Tiga diagram editorial (HTML + SVG) untuk arsitektur situs, alur laporan, dan model data penjelajah. Bukan Mermaid — sesuai standar diagram-design program P1.</p>
+
+  <h2>1 · Arsitektur situs statis</h2>
+  <figure>
+    <svg viewBox="0 0 880 300" role="img" aria-label="Diagram arsitektur: pengunjung ke Cloudflare Pages, halaman dan berkas disajikan langsung, app.js mengambil data mentah">
+      <!-- Pengunjung -->
+      <rect x="16" y="110" width="150" height="80" fill="#FAFAF7" stroke="#14232E" stroke-width="2"/>
+      <text x="91" y="140" text-anchor="middle" class="b" font-size="15" fill="#14232E">Pengunjung</text>
+      <text x="91" y="164" text-anchor="middle" class="s" font-size="12" fill="#5B6B74">browser</text>
+      <!-- Panah -->
+      <line x1="166" y1="150" x2="226" y2="150" stroke="#14232E" stroke-width="2"/>
+      <polygon points="226,150 214,144 214,156" fill="#14232E"/>
+      <!-- Pages -->
+      <rect x="226" y="30" width="300" height="240" fill="#fff" stroke="#14232E" stroke-width="2"/>
+      <text x="376" y="58" text-anchor="middle" class="b" font-size="15" fill="#14232E">Cloudflare Pages</text>
+      <text x="376" y="78" text-anchor="middle" class="s" font-size="12" fill="#5B6B74">report-fraud.pages.dev · root repo = folder deploy</text>
+      <rect x="246" y="96" width="260" height="34" fill="#FAFAF7" stroke="#14232E"/>
+      <text x="258" y="117" class="s" font-size="13" fill="#14232E">index.html · styles.css · app.js</text>
+      <rect x="246" y="140" width="260" height="34" fill="#FAFAF7" stroke="#14232E"/>
+      <text x="258" y="161" class="s" font-size="13" fill="#14232E">og-image.png · favicon.svg</text>
+      <rect x="246" y="184" width="260" height="34" fill="#fff" stroke="#9E1B1B" stroke-width="2"/>
+      <text x="258" y="205" class="s" font-size="13" fill="#9E1B1B">Security_Disclosure_USK_2026.pdf</text>
+      <rect x="246" y="228" width="260" height="34" fill="#fff" stroke="#9E1B1B" stroke-width="2"/>
+      <text x="258" y="249" class="s" font-size="13" fill="#9E1B1B">full_hosts_scan_usk.txt (21 KB)</text>
+      <!-- Panah balik app.js -> txt -->
+      <path d="M 560 245 C 640 245, 640 120, 700 120" fill="none" stroke="#9E1B1B" stroke-width="2" stroke-dasharray="6 4"/>
+      <polygon points="700,120 688,114 688,126" fill="#9E1B1B"/>
+      <!-- Penjelajah -->
+      <rect x="700" y="80" width="164" height="80" fill="#FAFAF7" stroke="#14232E" stroke-width="2"/>
+      <text x="782" y="110" text-anchor="middle" class="b" font-size="14" fill="#14232E">app.js</text>
+      <text x="782" y="132" text-anchor="middle" class="s" font-size="12" fill="#5B6B74">fetch + parse</text>
+      <text x="782" y="148" text-anchor="middle" class="s" font-size="12" fill="#5B6B74">Bagian 3 → 893 host</text>
+    </svg>
+    <p class="cap">Gambar 1 — Tidak ada server aplikasi dan tidak ada build step. Pages menyajikan file statis; satu-satunya data dinamis adalah TXT lampiran yang diambil app.js saat runtime (garis merah putus-putus).</p>
+  </figure>
+
+  <h2>2 · Alur laporan menjadi situs</h2>
+  <figure>
+    <svg viewBox="0 0 880 260" role="img" aria-label="Diagram alur: pemindaian OSINT 29 April 2026, laporan PDF dan data mentah, restructure ke root, situs arsip, deploy Pages">
+      <line x1="40" y1="130" x2="840" y2="130" stroke="#14232E" stroke-width="2"/>
+      <!-- node 1 -->
+      <circle cx="90" cy="130" r="10" fill="#9E1B1B"/>
+      <text x="90" y="92" text-anchor="middle" class="b" font-size="13" fill="#14232E">29 Apr 2026</text>
+      <text x="90" y="170" text-anchor="middle" class="s" font-size="12" fill="#5B6B74">OSINT pasif</text>
+      <text x="90" y="186" text-anchor="middle" class="s" font-size="12" fill="#5B6B74">atas usk.ac.id</text>
+      <!-- node 2 -->
+      <circle cx="300" cy="130" r="10" fill="#14232E"/>
+      <text x="300" y="92" text-anchor="middle" class="b" font-size="13" fill="#14232E">Laporan + lampiran</text>
+      <text x="300" y="170" text-anchor="middle" class="s" font-size="12" fill="#5B6B74">PDF 2 hlm + TXT 3 bagian</text>
+      <text x="300" y="186" text-anchor="middle" class="s" font-size="12" fill="#5B6B74">di subfolder unsyiah/</text>
+      <!-- node 3 -->
+      <circle cx="510" cy="130" r="10" fill="#B98A1F"/>
+      <text x="510" y="92" text-anchor="middle" class="b" font-size="13" fill="#14232E">Restructure</text>
+      <text x="510" y="170" text-anchor="middle" class="s" font-size="12" fill="#5B6B74">unsyiah/ → root repo</text>
+      <text x="510" y="186" text-anchor="middle" class="s" font-size="12" fill="#5B6B74">byte-identik (PR #1)</text>
+      <!-- node 4 -->
+      <circle cx="720" cy="130" r="10" fill="#14232E"/>
+      <text x="720" y="92" text-anchor="middle" class="b" font-size="13" fill="#14232E">Situs arsip</text>
+      <text x="720" y="170" text-anchor="middle" class="s" font-size="12" fill="#5B6B74">laporan + penjelajah</text>
+      <text x="720" y="186" text-anchor="middle" class="s" font-size="12" fill="#5B6B74">live di Pages</text>
+      <text x="720" y="222" text-anchor="middle" class="s" font-size="12" fill="#9E1B1B">19 Nov 2026 · P1 #39</text>
+    </svg>
+    <p class="cap">Gambar 2 — Situs ini tidak menambah temuan baru: ia hanya memindahkan arsip yang sudah ada ke root dan menyajikannya sebagai halaman yang bisa dibaca dan dicari.</p>
+  </figure>
+
+  <h2>3 · Model data penjelajah</h2>
+  <figure>
+    <svg viewBox="0 0 880 320" role="img" aria-label="Diagram model data: baris mentah dipecah jadi host, akhiran, dan kategori, lalu dirender sebagai daftar yang bisa dicari">
+      <!-- TXT -->
+      <rect x="16" y="110" width="190" height="100" fill="#fff" stroke="#9E1B1B" stroke-width="2"/>
+      <text x="111" y="140" text-anchor="middle" class="b" font-size="14" fill="#14232E">full_hosts_scan_usk.txt</text>
+      <text x="111" y="162" text-anchor="middle" class="s" font-size="12" fill="#5B6B74">Bagian 3 · 893 baris</text>
+      <text x="111" y="180" text-anchor="middle" class="s" font-size="12" fill="#5B6B74">satu host per baris</text>
+      <line x1="206" y1="160" x2="266" y2="160" stroke="#14232E" stroke-width="2"/>
+      <polygon points="266,160 254,154 254,166" fill="#14232E"/>
+      <!-- parse -->
+      <rect x="266" y="110" width="150" height="100" fill="#FAFAF7" stroke="#14232E" stroke-width="2"/>
+      <text x="341" y="140" text-anchor="middle" class="b" font-size="14" fill="#14232E">parse</text>
+      <text x="341" y="162" text-anchor="middle" class="s" font-size="12" fill="#5B6B74">host = raw.split(':')[0]</text>
+      <text x="341" y="180" text-anchor="middle" class="s" font-size="12" fill="#5B6B74">akhiran → catatan</text>
+      <line x1="416" y1="160" x2="476" y2="160" stroke="#14232E" stroke-width="2"/>
+      <polygon points="476,160 464,154 464,166" fill="#14232E"/>
+      <!-- kategori -->
+      <rect x="476" y="40" width="180" height="240" fill="#fff" stroke="#14232E" stroke-width="2"/>
+      <text x="566" y="68" text-anchor="middle" class="b" font-size="14" fill="#14232E">Klasifikasi</text>
+      <text x="492" y="100" class="s" font-size="12" fill="#14232E">Dev &amp; staging · 6</text>
+      <text x="492" y="124" class="s" font-size="12" fill="#14232E">Webmail · 8</text>
+      <text x="492" y="148" class="s" font-size="12" fill="#14232E">Mail · 25</text>
+      <text x="492" y="172" class="s" font-size="12" fill="#14232E">Fakultas · 256</text>
+      <text x="492" y="196" class="s" font-size="12" fill="#14232E">Layanan · 594</text>
+      <text x="492" y="220" class="s" font-size="12" fill="#14232E">Lainnya · 4</text>
+      <text x="492" y="252" class="s" font-size="12" fill="#9E1B1B">Total · 893</text>
+      <line x1="656" y1="160" x2="716" y2="160" stroke="#14232E" stroke-width="2"/>
+      <polygon points="716,160 704,154 704,166" fill="#14232E"/>
+      <!-- UI -->
+      <rect x="716" y="110" width="148" height="100" fill="#FAFAF7" stroke="#14232E" stroke-width="2"/>
+      <text x="790" y="140" text-anchor="middle" class="b" font-size="14" fill="#14232E">Daftar UI</text>
+      <text x="790" y="162" text-anchor="middle" class="s" font-size="12" fill="#5B6B74">cari + filter</text>
+      <text x="790" y="180" text-anchor="middle" class="s" font-size="12" fill="#5B6B74">50 / halaman</text>
+    </svg>
+    <p class="cap">Gambar 3 — Klasifikasi adalah pengelompokan otomatis berdasarkan nama host (aturan di docs/API.md), bukan label dari laporan. Jumlah per kategori diikat oleh scripts/check-data.mjs.</p>
+  </figure>
+</div>
+</body>
+</html>
