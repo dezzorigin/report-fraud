@@ -47,6 +47,7 @@ jobs:
         run: npm run validate
 
       - name: Unggah package-lock hasil instalasi
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: package-lock
