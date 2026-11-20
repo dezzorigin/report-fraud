@@ -56,10 +56,11 @@ repo saat restructure (PR #1) — isinya tidak diubah.
 
 ## Video demo
 
-![Video demo Report Fraud](docs/demo/demo.mp4)
+[![Video demo Report Fraud](docs/screenshots/landing-desktop.png)](docs/demo/demo.mp4)
 
 Video walkthrough (hero → temuan → penjelajah → berkas), direkam dari
-sistem live lokal. Lihat `docs/demo/demo.mp4`.
+sistem live lokal — klik thumbnail di atas untuk memutar
+(`docs/demo/demo.mp4`, 20 detik, 1280×720).
 
 ## Cara menjalankan lokal
 
