@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Fixed
+- Media README diregenerasi dari situs lokal (`npm run screenshots` +
+  `npm run make-video`): 4 screenshot yang direferensikan README
+  (`docs/screenshots/landing-desktop.png`, `temuan-desktop.png`,
+  `explorer-desktop.png`, `berkas-desktop.png`) + video demo
+  (`docs/demo/demo.mp4`, 20 detik, 1280×720) tidak pernah ter-commit
+  sehingga gambarnya rusak di GitHub — kini ada di repo dan
+  terverifikasi visual (screenshot asli aplikasi, bukan placeholder).
+- Referensi video demo di README diubah dari embed gambar langsung
+  (`![](...mp4)`, tidak dirender GitHub) menjadi thumbnail klik
+  (screenshot landing) + tautan mp4.
+- `og-image.png` diregenerasi dari hero (1200×630).
+
 ## [1.1.0] — 2026-11-19
 
 ### Added
